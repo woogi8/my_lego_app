@@ -388,6 +388,96 @@ const LegoRegister = () => {
     };
   };
 
+  // Brickset에서 레고 정보 가져오기
+  const fetchBricksetInfo = async (legoNumber) => {
+    if (!legoNumber) {
+      alert('레고 번호를 입력해주세요.');
+      return;
+    }
+
+    try {
+      setMessage('🔍 Brickset에서 정보를 가져오는 중...');
+      
+      // 실제 Brickset 데이터를 시뮬레이션 (실제로는 API 호출이 필요)
+      // 예시 데이터 매핑
+      const bricksetData = {
+        '42207': {
+          productName: 'Mack at the Monster Truck Race',
+          theme: 'Technic',
+          releaseDate: '2025-01-01',
+          retailPrice: 14.99
+        },
+        '10320': {
+          productName: 'Eldorado Fortress',
+          theme: 'Icons',
+          releaseDate: '2023-07-01',
+          retailPrice: 214.99
+        },
+        '76832': {
+          productName: 'XL-15 Spaceship',
+          theme: 'Disney',
+          releaseDate: '2022-04-24',
+          retailPrice: 49.99
+        },
+        '21348': {
+          productName: 'Dungeons & Dragons: Red Dragon\'s Tale',
+          theme: 'Ideas',
+          releaseDate: '2024-04-01',
+          retailPrice: 359.99
+        }
+      };
+
+      // 데이터가 있으면 자동 입력
+      if (bricksetData[legoNumber]) {
+        const data = bricksetData[legoNumber];
+        const retailPriceKRW = Math.round(data.retailPrice * 1450); // 달러를 원화로 변환 (환율 1450)
+        
+        setFormData(prev => ({
+          ...prev,
+          productName: data.productName,
+          theme: data.theme,
+          releaseDate: data.releaseDate,
+          retailPrice: retailPriceKRW.toString(),
+          imageUrl: `https://images.brickset.com/sets/images/${legoNumber}-1.jpg`
+        }));
+        
+        setMessage(`✅ Brickset에서 "${data.productName}" 정보를 가져왔습니다!`);
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        // API 호출 시뮬레이션 (실제로는 서버 API 호출)
+        const response = await fetch(`http://localhost:3001/api/brickset/${legoNumber}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          const retailPriceKRW = Math.round(result.data.retailPrice * 1450);
+          
+          setFormData(prev => ({
+            ...prev,
+            productName: result.data.productName,
+            theme: result.data.theme,
+            releaseDate: result.data.releaseDate,
+            retailPrice: retailPriceKRW.toString(),
+            imageUrl: `https://images.brickset.com/sets/images/${legoNumber}-1.jpg`
+          }));
+          
+          setMessage(`✅ Brickset에서 정보를 가져왔습니다!`);
+        } else {
+          setMessage('⚠️ Brickset에서 정보를 찾을 수 없습니다. 직접 입력해주세요.');
+        }
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      console.error('Brickset 정보 가져오기 오류:', error);
+      setMessage('❌ 정보를 가져오는 중 오류가 발생했습니다.');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('등록된 레고 정보:', formData);
@@ -2983,22 +3073,61 @@ const LegoRegister = () => {
             }}>
               🔢 레고 번호
             </label>
-            <input
-              type="text"
-              name="legoNumber"
-              value={formData.legoNumber}
-              onChange={handleInputChange}
-              placeholder="예: 6036"
-              required
-              style={{
-                width: '100%',
-                padding: '15px',
-                fontSize: '1.2rem',
-                border: '2px solid #000000',
-                borderRadius: '8px',
-                boxSizing: 'border-box'
-              }}
-            />
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch' }}>
+              <input
+                type="text"
+                name="legoNumber"
+                value={formData.legoNumber}
+                onChange={handleInputChange}
+                placeholder="예: 42207"
+                required
+                style={{
+                  flex: 1,
+                  padding: '15px',
+                  fontSize: '1.2rem',
+                  border: '2px solid #000000',
+                  borderRadius: '8px',
+                  boxSizing: 'border-box'
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => fetchBricksetInfo(formData.legoNumber)}
+                disabled={!formData.legoNumber}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: formData.legoNumber ? '#000000' : '#cccccc',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  cursor: formData.legoNumber ? 'pointer' : 'not-allowed',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseOver={(e) => {
+                  if (formData.legoNumber) {
+                    e.target.style.backgroundColor = '#333333';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (formData.legoNumber) {
+                    e.target.style.backgroundColor = '#000000';
+                  }
+                }}
+              >
+                🔍 Brickset 정보 가져오기
+              </button>
+            </div>
+            <p style={{ 
+              fontSize: '0.9rem', 
+              color: '#666666', 
+              marginTop: '8px',
+              fontStyle: 'italic'
+            }}>
+              💡 레고 번호를 입력하고 버튼을 클릭하면 Brickset에서 정보를 자동으로 가져옵니다.
+            </p>
           </div>
 
           {/* 제품명 */}

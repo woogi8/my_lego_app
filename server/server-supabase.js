@@ -370,6 +370,35 @@ app.post('/api/migrate', async (req, res) => {
   }
 });
 
+// 6. Brickset에서 레고 정보 가져오기
+app.get('/api/brickset/:setNumber', authenticateToken, async (req, res) => {
+  try {
+    const { setNumber } = req.params;
+    console.log('🔍 Brickset 정보 조회:', setNumber);
+    
+    // Brickset URL 구성
+    const bricksetUrl = `https://brickset.com/sets/${setNumber}`;
+    
+    // 참고: 실제 구현시에는 웹 스크래핑 라이브러리나 Brickset API를 사용해야 함
+    // 여기서는 예시 데이터를 반환
+    // 실제로는 puppeteer, playwright 또는 Brickset API를 사용하여 구현
+    
+    // 임시 응답 (실제 구현시 스크래핑 또는 API 호출로 대체)
+    res.json({
+      success: false,
+      message: 'Brickset 정보 가져오기 기능은 CORS 정책으로 인해 서버에서 구현이 필요합니다.',
+      note: '실제 구현시 puppeteer나 Brickset API를 사용하세요.'
+    });
+    
+  } catch (error) {
+    console.error('Brickset 조회 오류:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
 // ========== 서버 시작 ==========
 
 const startServer = async () => {
