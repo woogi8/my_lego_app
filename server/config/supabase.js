@@ -37,7 +37,8 @@ const COLUMN_MAPPING = {
   '구입 가격 (원)': 'purchase_price', 
   '현재 시세 (원)': 'current_market_price',
   '상태': 'condition',
-  '이미지 URL': 'image_url'
+  '이미지 URL': 'image_url',
+  '등록일': 'created_at'
 };
 
 // 영어 -> 한국어 컬럼명 역매핑

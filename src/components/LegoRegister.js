@@ -1942,6 +1942,7 @@ const LegoRegister = () => {
                     </span>
                   </div>
 
+
                   <div style={{ marginBottom: '8px' }}>
                     <strong style={{ color: '#000000', fontSize: '0.9rem' }}>상태:</strong>
                     <span style={{ 
