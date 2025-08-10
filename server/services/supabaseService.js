@@ -359,34 +359,7 @@ class SupabaseService {
           
           // 날짜 필드 유효성 검사 및 변환
           if (['release_date', 'purchase_date'].includes(englishKey)) {
-            // 유효하지 않은 날짜 형식 처리
-            if (value === '0000-00-00' || value === '00-00-0000' || !value || value === 'N/A') {
-              value = null;  // null로 설정
-            } else {
-              // 날짜 형식 검증 및 유효성 확인
-              const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-              if (datePattern.test(value)) {
-                // YYYY-MM-DD 형식이면 유효성 확인
-                const [year, month, day] = value.split('-').map(Number);
-                if (month < 1 || month > 12 || day < 1 || day > 31) {
-                  value = null;  // 잘못된 날짜
-                } else {
-                  // 실제 날짜 객체로 검증
-                  const testDate = new Date(value);
-                  if (isNaN(testDate.getTime())) {
-                    value = null;
-                  }
-                }
-              } else {
-                // YYYY-MM-DD가 아닌 경우 변환 시도
-                const date = new Date(value);
-                if (!isNaN(date.getTime())) {
-                  value = date.toISOString().split('T')[0];
-                } else {
-                  value = null;
-                }
-              }
-            }
+            value = this.sanitizeDate(value);
           }
           
           // null이 아닌 경우에만 추가
@@ -398,6 +371,82 @@ class SupabaseService {
     });
     
     return convertedItem;
+  }
+  
+  /**
+   * 날짜 데이터 정리 및 검증
+   * @param {any} value - 날짜 값
+   * @returns {string|null} 유효한 날짜 문자열 또는 null
+   */
+  sanitizeDate(value) {
+    if (!value || value === '' || value === 'N/A' || value === 'null' || value === 'undefined') {
+      return null;
+    }
+    
+    // 문자열로 변환
+    let dateStr = String(value).trim();
+    
+    // 명백히 잘못된 패턴들 제거
+    if (dateStr === '0000-00-00' || 
+        dateStr === '00-00-0000' || 
+        dateStr.startsWith('+') ||  // "+020201-07-31" 같은 형태
+        dateStr.length > 20 ||      // 너무 긴 날짜 문자열
+        /[^\d\-\/\.\s]/.test(dateStr)) {  // 날짜에 허용되지 않는 문자
+      console.warn('❌ 잘못된 날짜 형식 감지:', dateStr);
+      return null;
+    }
+    
+    // 연도가 비정상적으로 큰 경우 체크 (4자리 초과 연도)
+    const yearMatch = dateStr.match(/(\d{5,})/);
+    if (yearMatch) {
+      console.warn('❌ 비정상적인 연도 감지:', dateStr);
+      return null;
+    }
+    
+    try {
+      // 기본 YYYY-MM-DD 패턴 확인
+      const standardPattern = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+      const match = dateStr.match(standardPattern);
+      
+      if (match) {
+        const [, year, month, day] = match;
+        const yearNum = parseInt(year);
+        const monthNum = parseInt(month);
+        const dayNum = parseInt(day);
+        
+        // 기본 범위 체크
+        if (yearNum < 1900 || yearNum > 2100 || 
+            monthNum < 1 || monthNum > 12 || 
+            dayNum < 1 || dayNum > 31) {
+          console.warn('❌ 날짜 범위 오류:', dateStr);
+          return null;
+        }
+        
+        // 실제 Date 객체로 검증
+        const testDate = new Date(yearNum, monthNum - 1, dayNum);
+        if (testDate.getFullYear() !== yearNum || 
+            testDate.getMonth() !== monthNum - 1 || 
+            testDate.getDate() !== dayNum) {
+          console.warn('❌ 유효하지 않은 날짜:', dateStr);
+          return null;
+        }
+        
+        return dateStr;
+      }
+      
+      // 다른 형식들을 YYYY-MM-DD로 변환 시도
+      const date = new Date(dateStr);
+      if (!isNaN(date.getTime()) && date.getFullYear() >= 1900 && date.getFullYear() <= 2100) {
+        return date.toISOString().split('T')[0];
+      }
+      
+      console.warn('❌ 날짜 파싱 실패:', dateStr);
+      return null;
+      
+    } catch (error) {
+      console.warn('❌ 날짜 처리 오류:', dateStr, error.message);
+      return null;
+    }
   }
   
   /**

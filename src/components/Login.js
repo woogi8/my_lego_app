@@ -38,52 +38,66 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <div className="login-header">
-          <h1>🧱 레고 관리 시스템</h1>
-          <p>로그인하여 시작하세요</p>
+      <div className="container">
+        <div className="login-content">
+          <div className="login-header fade-in">
+            <div className="logo">
+              <span className="logo-icon">🧱</span>
+              <h1>LEGO Collection</h1>
+            </div>
+            <p className="subtitle text-gray">Sign in to manage your collection</p>
+          </div>
+          
+          <div className="login-form-container slide-up">
+            <form onSubmit={handleSubmit} className="login-form">
+              <div className="form-group">
+                <label htmlFor="username" className="form-label">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="form-input"
+                  placeholder="Enter your username"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="form-input"
+                  placeholder="Enter your password"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              {error && (
+                <div className="error-message">
+                  <span>⚠️</span>
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className={`btn btn-primary ${loading ? 'loading' : ''}`}
+                disabled={loading}
+                style={{ width: '100%', marginTop: '24px' }}
+              >
+                {loading ? 'Signing in...' : 'Sign In'}
+              </button>
+            </form>
+          </div>
         </div>
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="username">아이디</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="아이디를 입력하세요"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">비밀번호</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="비밀번호를 입력하세요"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          {error && <div className="error-message">{error}</div>}
-
-          <button
-            type="submit"
-            className={`login-button ${loading ? 'loading' : ''}`}
-            disabled={loading}
-          >
-            {loading ? '로그인 중...' : '로그인'}
-          </button>
-        </form>
-
       </div>
     </div>
   );

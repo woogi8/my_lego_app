@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 // 미들웨어
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // 고정 사용자 정보 (실제 운영환경에서는 데이터베이스 사용)
 const USERS = {
