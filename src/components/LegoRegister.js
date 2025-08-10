@@ -29,6 +29,7 @@ const LegoRegister = () => {
   const [selectedTheme, setSelectedTheme] = useState('전체');
   const [selectedYear, setSelectedYear] = useState('전체');
   const [sortBy, setSortBy] = useState('none');
+  const [searchNumber, setSearchNumber] = useState('');
   const [filteredAndSortedList, setFilteredAndSortedList] = useState([]);
   const [message, setMessage] = useState('');
 
@@ -180,7 +181,7 @@ const LegoRegister = () => {
   };
 
   // 필터링 및 정렬 함수
-  const applyFilterAndSort = (data, theme, year, sortOrder) => {
+  const applyFilterAndSort = (data, theme, year, sortOrder, searchNum = '') => {
     // data가 배열이 아닌 경우 빈 배열 반환
     if (!Array.isArray(data)) {
       return [];
@@ -204,6 +205,14 @@ const LegoRegister = () => {
         } catch {
           return false;
         }
+      });
+    }
+
+    // 레고 번호 검색 필터링
+    if (searchNum) {
+      filtered = filtered.filter(lego => {
+        const legoNumber = lego['레고 번호'];
+        return legoNumber && legoNumber.toString().includes(searchNum);
       });
     }
 
@@ -245,9 +254,9 @@ const LegoRegister = () => {
 
   // legoList가 변경될 때 필터링 및 정렬 적용
   useEffect(() => {
-    const result = applyFilterAndSort(legoList, selectedTheme, selectedYear, sortBy);
+    const result = applyFilterAndSort(legoList, selectedTheme, selectedYear, sortBy, searchNumber);
     setFilteredAndSortedList(result);
-  }, [legoList, selectedTheme, selectedYear, sortBy]);
+  }, [legoList, selectedTheme, selectedYear, sortBy, searchNumber]);
 
   // 분석 관련 함수들
   const getAnalysisData = () => {
@@ -1510,6 +1519,45 @@ const LegoRegister = () => {
               </select>
             </div>
 
+            {/* 레고 번호 검색 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontWeight: 'bold', color: '#000000' }}>🔍 번호:</span>
+              <input
+                type="text"
+                placeholder="레고 번호 검색..."
+                value={searchNumber}
+                onChange={(e) => setSearchNumber(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '2px solid #bdc3c7',
+                  fontSize: '1rem',
+                  backgroundColor: 'white',
+                  outline: 'none',
+                  transition: 'border-color 0.3s ease',
+                  width: '150px'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#000000'}
+                onBlur={(e) => e.target.style.borderColor = '#bdc3c7'}
+              />
+              {searchNumber && (
+                <button
+                  onClick={() => setSearchNumber('')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#666',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    padding: '2px'
+                  }}
+                  title="검색어 지우기"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
             {/* 정렬 옵션 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontWeight: 'bold', color: '#000000' }}>📊 정렬:</span>
@@ -1552,15 +1600,18 @@ const LegoRegister = () => {
             }}>
               {(() => {
                 let label = '';
-                if (selectedTheme === '전체' && selectedYear === '전체') {
+                const filters = [];
+                
+                if (selectedTheme !== '전체') filters.push(selectedTheme);
+                if (selectedYear !== '전체') filters.push(`${selectedYear}년`);
+                if (searchNumber) filters.push(`"${searchNumber}"`);
+                
+                if (filters.length === 0) {
                   label = '전체';
-                } else if (selectedTheme === '전체') {
-                  label = `${selectedYear}년`;
-                } else if (selectedYear === '전체') {
-                  label = selectedTheme;
                 } else {
-                  label = `${selectedYear}년 ${selectedTheme}`;
+                  label = filters.join(' ');
                 }
+                
                 return `${label} ${filteredAndSortedList?.length || 0}개`;
               })()}
             </div>
