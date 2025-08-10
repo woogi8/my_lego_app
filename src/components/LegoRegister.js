@@ -24,6 +24,7 @@ const LegoRegister = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingLegoId, setEditingLegoId] = useState(null);
   const [editFormData, setEditFormData] = useState({});
+  const [userModifiedImageUrl, setUserModifiedImageUrl] = useState(false);
   const [fileStatus, setFileStatus] = useState(null);
   const [selectedTheme, setSelectedTheme] = useState('전체');
   const [sortBy, setSortBy] = useState('none');
@@ -92,6 +93,21 @@ const LegoRegister = () => {
     }
   };
 
+  // 이미지 URL 생성 함수
+  const generateImageUrl = (legoNumber) => {
+    return legoNumber ? `https://images.brickset.com/sets/images/${legoNumber}-1.jpg` : '';
+  };
+
+  // 이미지 URL 처리 함수 (기존 값이 있으면 유지, 없으면 자동 생성)
+  const handleImageUrl = (existingUrl, legoNumber) => {
+    // 기존에 사용자가 입력한 URL이 있으면 유지
+    if (existingUrl && existingUrl.trim() && !existingUrl.includes('sets/images/')) {
+      return existingUrl;
+    }
+    // 없으면 레고 번호로 자동 생성
+    return generateImageUrl(legoNumber);
+  };
+
   // 컴포넌트 마운트시 데이터 불러오기
   useEffect(() => {
     loadLegoData();
@@ -105,7 +121,7 @@ const LegoRegister = () => {
       setFormData(prev => ({
         ...prev,
         [name]: value,
-        imageUrl: value ? `https://images.brickset.com/sets/images/${value}-1.jpg` : ''
+        imageUrl: handleImageUrl(prev.imageUrl, value)
       }));
     } else {
       setFormData(prev => ({
@@ -462,7 +478,8 @@ const LegoRegister = () => {
             purchasePrice: String(row[keys[6]] || ''),
             currentPrice: String(row[keys[7]] || ''),
             status: String(row[keys[8]] || ''),
-            imageUrl: row[keys[1]] ? `https://images.brickset.com/sets/images/${row[keys[1]]}-1.jpg` : ''
+            // 9번째 컬럼에 이미지 URL이 있으면 사용, 없으면 레고 번호로 자동 생성
+            imageUrl: handleImageUrl(row[keys[9]] && String(row[keys[9]]).trim(), row[keys[1]])
           };
         });
 
@@ -568,7 +585,8 @@ const LegoRegister = () => {
           '정가 (원)': '50000',
           '구입 가격 (원)': '35000',
           '현재 시세 (원)': '45000',
-          '상태': '보관 중'
+          '상태': '보관 중',
+          '이미지 URL': ''
         },
         {
           '출시일': '2023-05-20',
@@ -579,7 +597,8 @@ const LegoRegister = () => {
           '정가 (원)': '120000',
           '구입 가격 (원)': '89000',
           '현재 시세 (원)': '110000',
-          '상태': '조립 완료'
+          '상태': '조립 완료',
+          '이미지 URL': 'https://example.com/custom-image.jpg'
         },
         {
           '출시일': '2023-08-10',
@@ -590,7 +609,8 @@ const LegoRegister = () => {
           '정가 (원)': '899000',
           '구입 가격 (원)': '750000',
           '현재 시세 (원)': '850000',
-          '상태': '판매 완료'
+          '상태': '판매 완료',
+          '이미지 URL': ''
         }
       ];
 
@@ -629,6 +649,7 @@ const LegoRegister = () => {
   const startEdit = (index, lego) => {
     setEditingIndex(index);
     setEditingLegoId(lego.id); // 실제 DB ID 저장
+    setUserModifiedImageUrl(false); // 수정 시작 시 플래그 초기화
     setEditFormData({
       releaseDate: lego['출시일'],
       legoNumber: lego['레고 번호'],
@@ -648,6 +669,7 @@ const LegoRegister = () => {
     setEditingIndex(null);
     setEditingLegoId(null);
     setEditFormData({});
+    setUserModifiedImageUrl(false); // 플래그 초기화
   };
 
   // 수정 폼 데이터 변경 핸들러
@@ -658,7 +680,15 @@ const LegoRegister = () => {
       setEditFormData(prev => ({
         ...prev,
         [name]: value,
-        imageUrl: value ? `https://images.brickset.com/sets/images/${value}-1.jpg` : ''
+        // 사용자가 이미지 URL을 직접 수정하지 않았을 때만 자동 생성
+        imageUrl: userModifiedImageUrl ? prev.imageUrl : handleImageUrl(prev.imageUrl, value)
+      }));
+    } else if (name === 'imageUrl') {
+      // 이미지 URL을 직접 수정한 것으로 표시
+      setUserModifiedImageUrl(true);
+      setEditFormData(prev => ({
+        ...prev,
+        [name]: value
       }));
     } else {
       setEditFormData(prev => ({
@@ -707,6 +737,7 @@ const LegoRegister = () => {
         setEditingIndex(null);
         setEditingLegoId(null);
         setEditFormData({});
+        setUserModifiedImageUrl(false); // 플래그 초기화
 
         alert('레고 정보가 DB에 정상적으로 수정되었습니다!');
       } else {
@@ -1635,6 +1666,46 @@ const LegoRegister = () => {
                             <option value="분실/파손">❌ 분실/파손</option>
                           </select>
                         </div>
+
+                        {/* 이미지 URL 필드 추가 */}
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>이미지 URL</label>
+                          <input
+                            type="url"
+                            name="imageUrl"
+                            value={editFormData.imageUrl || ''}
+                            onChange={handleEditInputChange}
+                            placeholder="직접 입력하거나 레고 번호 변경 시 자동 생성"
+                            style={{
+                              width: '100%',
+                              padding: '6px',
+                              fontSize: '0.8rem',
+                              border: '1px solid #bdc3c7',
+                              borderRadius: '3px',
+                              marginTop: '3px'
+                            }}
+                          />
+                        </div>
+
+                        {/* 이미지 미리보기 */}
+                        {editFormData.imageUrl && (
+                          <div style={{ marginTop: '8px' }}>
+                            <img
+                              src={editFormData.imageUrl}
+                              alt="레고 이미지 미리보기"
+                              style={{
+                                width: '100%',
+                                maxWidth: '200px',
+                                height: 'auto',
+                                borderRadius: '4px',
+                                border: '1px solid #ddd'
+                              }}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -1970,6 +2041,7 @@ const LegoRegister = () => {
               <li>구입 가격 (원) (예: 35000)</li>
               <li>현재 시세 (원) (예: 45000)</li>
               <li>상태 (예: 보관 중)</li>
+              <li>이미지 URL (선택사항 - 비어있으면 레고 번호로 자동 생성)</li>
             </ul>
             <div style={{
               marginTop: '15px',
@@ -3066,8 +3138,7 @@ const LegoRegister = () => {
               name="imageUrl"
               value={formData.imageUrl}
               onChange={handleInputChange}
-              placeholder="이미지 URL (레고 번호 입력시 자동 생성)"
-              readOnly
+              placeholder="직접 입력하거나 레고 번호 입력시 자동 생성됩니다"
               style={{
                 width: '100%',
                 padding: '15px',
@@ -3079,6 +3150,17 @@ const LegoRegister = () => {
                 color: '#666666'
               }}
             />
+            <div style={{ 
+              marginTop: '8px', 
+              fontSize: '0.9rem', 
+              color: '#666666',
+              lineHeight: '1.4'
+            }}>
+              💡 <strong>이미지 URL 사용법:</strong><br/>
+              • 직접 이미지 URL을 입력하거나<br/>
+              • 레고 번호 입력 시 자동으로 Brickset 이미지가 생성됩니다<br/>
+              • 사용자 지정 URL이 우선 적용됩니다
+            </div>
           </div>
 
           {/* 등록 버튼 */}
