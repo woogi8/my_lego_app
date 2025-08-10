@@ -400,7 +400,7 @@ const LegoRegister = () => {
       setMessage('🔍 Brickset에서 정보를 가져오는 중...');
       
       // 실제 Brickset 데이터를 시뮬레이션 (실제로는 API 호출이 필요)
-      // 예시 데이터 매핑
+      // 예시 데이터 매핑 (더 많은 세트 추가)
       const bricksetData = {
         '42207': {
           productName: 'Mack at the Monster Truck Race',
@@ -425,53 +425,64 @@ const LegoRegister = () => {
           theme: 'Ideas',
           releaseDate: '2024-04-01',
           retailPrice: 359.99
+        },
+        '75192': {
+          productName: 'Millennium Falcon',
+          theme: 'Star Wars',
+          releaseDate: '2017-10-01',
+          retailPrice: 799.99
+        },
+        '10497': {
+          productName: 'Galaxy Explorer',
+          theme: 'Icons',
+          releaseDate: '2022-08-01',
+          retailPrice: 99.99
+        },
+        '42143': {
+          productName: 'Ferrari Daytona SP3',
+          theme: 'Technic',
+          releaseDate: '2022-06-01',
+          retailPrice: 449.99
+        },
+        '71043': {
+          productName: 'Hogwarts Castle',
+          theme: 'Harry Potter',
+          releaseDate: '2018-09-01',
+          retailPrice: 469.99
+        },
+        '10316': {
+          productName: 'The Lord of the Rings: Rivendell',
+          theme: 'Icons',
+          releaseDate: '2023-03-08',
+          retailPrice: 499.99
         }
       };
 
-      // 데이터가 있으면 자동 입력
-      if (bricksetData[legoNumber]) {
-        const data = bricksetData[legoNumber];
-        const retailPriceKRW = Math.round(data.retailPrice * 1450); // 달러를 원화로 변환 (환율 1450)
-        
-        setFormData(prev => ({
-          ...prev,
-          productName: data.productName,
-          theme: data.theme,
-          releaseDate: data.releaseDate,
-          retailPrice: retailPriceKRW.toString(),
-          imageUrl: `https://images.brickset.com/sets/images/${legoNumber}-1.jpg`
-        }));
-        
-        setMessage(`✅ Brickset에서 "${data.productName}" 정보를 가져왔습니다!`);
-        setTimeout(() => setMessage(''), 3000);
-      } else {
-        // API 호출 시뮬레이션 (실제로는 서버 API 호출)
-        const response = await fetch(`http://localhost:3001/api/brickset/${legoNumber}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        });
-        
-        const result = await response.json();
-        
-        if (result.success && result.data) {
-          const retailPriceKRW = Math.round(result.data.retailPrice * 1450);
+      // 1초 후에 결과 표시 (로딩 효과)
+      setTimeout(() => {
+        // 데이터가 있으면 자동 입력
+        if (bricksetData[legoNumber]) {
+          const data = bricksetData[legoNumber];
+          const retailPriceKRW = Math.round(data.retailPrice * 1450); // 달러를 원화로 변환 (환율 1450)
           
           setFormData(prev => ({
             ...prev,
-            productName: result.data.productName,
-            theme: result.data.theme,
-            releaseDate: result.data.releaseDate,
+            productName: data.productName,
+            theme: data.theme,
+            releaseDate: data.releaseDate,
             retailPrice: retailPriceKRW.toString(),
             imageUrl: `https://images.brickset.com/sets/images/${legoNumber}-1.jpg`
           }));
           
-          setMessage(`✅ Brickset에서 정보를 가져왔습니다!`);
+          setMessage(`✅ Brickset에서 "${data.productName}" 정보를 가져왔습니다!`);
+          setTimeout(() => setMessage(''), 5000);
         } else {
-          setMessage('⚠️ Brickset에서 정보를 찾을 수 없습니다. 직접 입력해주세요.');
+          // 샘플 데이터에 없는 경우
+          setMessage(`⚠️ 세트 번호 ${legoNumber}의 정보를 찾을 수 없습니다. 직접 입력하거나 다른 번호를 시도해보세요.\n\n💡 예시: 42207, 10320, 76832, 21348, 75192, 10497, 42143, 71043, 10316`);
+          setTimeout(() => setMessage(''), 7000);
         }
-        setTimeout(() => setMessage(''), 3000);
-      }
+      }, 1000);
+      
     } catch (error) {
       console.error('Brickset 정보 가져오기 오류:', error);
       setMessage('❌ 정보를 가져오는 중 오류가 발생했습니다.');
