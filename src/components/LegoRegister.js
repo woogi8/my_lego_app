@@ -829,7 +829,7 @@ const LegoRegister = () => {
       top: '0',
       width: '250px',
       height: '100vh',
-      backgroundColor: '#34495e',
+      backgroundColor: '#000000',
       color: 'white',
       transition: 'left 0.3s ease',
       zIndex: 10000,
@@ -838,8 +838,8 @@ const LegoRegister = () => {
       {/* 사이드바 헤더 */}
       <div style={{
         padding: '20px',
-        backgroundColor: '#2c3e50',
-        borderBottom: '1px solid #34495e'
+        backgroundColor: '#333333',
+        borderBottom: '1px solid #000000'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img 
@@ -863,7 +863,7 @@ const LegoRegister = () => {
           style={{
             width: '100%',
             padding: '15px 20px',
-            backgroundColor: currentPage === 'register' ? '#3498db' : 'transparent',
+            backgroundColor: currentPage === 'register' ? '#000000' : 'transparent',
             color: 'white',
             border: 'none',
             textAlign: 'left',
@@ -876,7 +876,7 @@ const LegoRegister = () => {
           }}
           onMouseOver={(e) => {
             if (currentPage !== 'register') {
-              e.target.style.backgroundColor = '#2c3e50';
+              e.target.style.backgroundColor = '#333333';
             }
           }}
           onMouseOut={(e) => {
@@ -894,7 +894,7 @@ const LegoRegister = () => {
           style={{
             width: '100%',
             padding: '15px 20px',
-            backgroundColor: currentPage === 'list' ? '#3498db' : 'transparent',
+            backgroundColor: currentPage === 'list' ? '#000000' : 'transparent',
             color: 'white',
             border: 'none',
             textAlign: 'left',
@@ -907,7 +907,7 @@ const LegoRegister = () => {
           }}
           onMouseOver={(e) => {
             if (currentPage !== 'list') {
-              e.target.style.backgroundColor = '#2c3e50';
+              e.target.style.backgroundColor = '#333333';
             }
           }}
           onMouseOut={(e) => {
@@ -925,7 +925,7 @@ const LegoRegister = () => {
           style={{
             width: '100%',
             padding: '15px 20px',
-            backgroundColor: currentPage === 'bulk' ? '#3498db' : 'transparent',
+            backgroundColor: currentPage === 'bulk' ? '#000000' : 'transparent',
             color: 'white',
             border: 'none',
             textAlign: 'left',
@@ -938,7 +938,7 @@ const LegoRegister = () => {
           }}
           onMouseOver={(e) => {
             if (currentPage !== 'bulk') {
-              e.target.style.backgroundColor = '#2c3e50';
+              e.target.style.backgroundColor = '#333333';
             }
           }}
           onMouseOut={(e) => {
@@ -957,7 +957,7 @@ const LegoRegister = () => {
           style={{
             width: '100%',
             padding: '15px 20px',
-            backgroundColor: currentPage === 'analysis' ? '#3498db' : 'transparent',
+            backgroundColor: currentPage === 'analysis' ? '#000000' : 'transparent',
             color: 'white',
             border: 'none',
             textAlign: 'left',
@@ -970,7 +970,7 @@ const LegoRegister = () => {
           }}
           onMouseOver={(e) => {
             if (currentPage !== 'analysis') {
-              e.target.style.backgroundColor = '#2c3e50';
+              e.target.style.backgroundColor = '#333333';
             }
           }}
           onMouseOut={(e) => {
@@ -988,12 +988,12 @@ const LegoRegister = () => {
 
   // 레고 목록 컴포넌트
   const renderLegoList = () => (
-    <div style={{ padding: '20px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+    <div style={{ padding: '20px', backgroundColor: '#f8f8f8', minHeight: '100vh' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <h1 style={{
           fontSize: '1.5rem', 
           padding: '15px', 
-          background: '#3498db', 
+          background: '#000000', 
           color: 'white', 
           margin: '0',
           borderRadius: '8px',
@@ -1012,7 +1012,7 @@ const LegoRegister = () => {
           style={{
             marginLeft: '15px',
             padding: '15px 20px',
-            backgroundColor: '#27ae60',
+            backgroundColor: '#000000',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -1026,11 +1026,11 @@ const LegoRegister = () => {
             gap: '8px'
           }}
           onMouseOver={(e) => {
-            e.target.style.backgroundColor = '#229954';
+            e.target.style.backgroundColor = '#333333';
             e.target.style.transform = 'translateY(-1px)';
           }}
           onMouseOut={(e) => {
-            e.target.style.backgroundColor = '#27ae60';
+            e.target.style.backgroundColor = '#000000';
             e.target.style.transform = 'translateY(0)';
           }}
         >
@@ -1066,7 +1066,7 @@ const LegoRegister = () => {
           style={{
             marginLeft: '10px',
             padding: '15px 20px',
-            backgroundColor: '#e74c3c',
+            backgroundColor: '#000000',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -1077,11 +1077,11 @@ const LegoRegister = () => {
             transition: 'all 0.3s ease'
           }}
           onMouseOver={(e) => {
-            e.target.style.backgroundColor = '#c0392b';
+            e.target.style.backgroundColor = '#333333';
             e.target.style.transform = 'translateY(-1px)';
           }}
           onMouseOut={(e) => {
-            e.target.style.backgroundColor = '#e74c3c';
+            e.target.style.backgroundColor = '#000000';
             e.target.style.transform = 'translateY(0)';
           }}
         >
@@ -1097,17 +1097,17 @@ const LegoRegister = () => {
           borderRadius: '8px',
           marginBottom: '20px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-          border: `2px solid #27ae60`
+          border: `2px solid #000000`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
             <span style={{ fontSize: '1.2rem' }}>
               ✅
             </span>
-            <strong style={{ color: '#27ae60' }}>
+            <strong style={{ color: '#000000' }}>
               Supabase 데이터베이스 연결됨
             </strong>
           </div>
-          <div style={{ fontSize: '0.9rem', color: '#7f8c8d' }}>
+          <div style={{ fontSize: '0.9rem', color: '#666666' }}>
             <div>🗄️ 데이터베이스: PostgreSQL (Supabase)</div>
             <div>📊 저장된 레고 수: {fileStatus?.totalItems || 0}개</div>
             {fileStatus?.timestamp && (
@@ -1125,7 +1125,7 @@ const LegoRegister = () => {
           borderRadius: '8px',
           marginBottom: '20px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-          border: '2px solid #3498db'
+          border: '2px solid #000000'
         }}>
           <div style={{ 
             display: 'flex', 
@@ -1135,7 +1135,7 @@ const LegoRegister = () => {
           }}>
             {/* 테마 필터 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontWeight: 'bold', color: '#2c3e50' }}>🎯 테마:</span>
+              <span style={{ fontWeight: 'bold', color: '#000000' }}>🎯 테마:</span>
               <select
                 value={selectedTheme}
                 onChange={(e) => setSelectedTheme(e.target.value)}
@@ -1149,7 +1149,7 @@ const LegoRegister = () => {
                   outline: 'none',
                   transition: 'border-color 0.3s ease'
                 }}
-                onFocus={(e) => e.target.style.borderColor = '#3498db'}
+                onFocus={(e) => e.target.style.borderColor = '#000000'}
                 onBlur={(e) => e.target.style.borderColor = '#bdc3c7'}
               >
                 {getUniqueThemes(legoList).map(theme => (
@@ -1162,7 +1162,7 @@ const LegoRegister = () => {
 
             {/* 정렬 옵션 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontWeight: 'bold', color: '#2c3e50' }}>📊 정렬:</span>
+              <span style={{ fontWeight: 'bold', color: '#000000' }}>📊 정렬:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -1176,7 +1176,7 @@ const LegoRegister = () => {
                   outline: 'none',
                   transition: 'border-color 0.3s ease'
                 }}
-                onFocus={(e) => e.target.style.borderColor = '#3498db'}
+                onFocus={(e) => e.target.style.borderColor = '#000000'}
                 onBlur={(e) => e.target.style.borderColor = '#bdc3c7'}
               >
                 <option value="none">기본 순서</option>
@@ -1192,7 +1192,7 @@ const LegoRegister = () => {
             <div style={{ 
               marginLeft: 'auto',
               padding: '8px 16px',
-              backgroundColor: '#3498db',
+              backgroundColor: '#000000',
               color: 'white',
               borderRadius: '20px',
               fontSize: '0.9rem',
@@ -1217,10 +1217,10 @@ const LegoRegister = () => {
           maxWidth: '400px',
           margin: '0 auto'
         }}>
-          <p style={{ fontSize: '1.5rem', color: '#7f8c8d', marginBottom: '20px' }}>
+          <p style={{ fontSize: '1.5rem', color: '#666666', marginBottom: '20px' }}>
             아직 등록된 레고가 없습니다.
           </p>
-          <p style={{ fontSize: '1.2rem', color: '#95a5a6' }}>
+          <p style={{ fontSize: '1.2rem', color: '#666666' }}>
             레고를 등록해보세요!
           </p>
           <button
@@ -1228,7 +1228,7 @@ const LegoRegister = () => {
             style={{
               marginTop: '30px',
               padding: '15px 30px',
-              backgroundColor: '#3498db',
+              backgroundColor: '#000000',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -1255,7 +1255,7 @@ const LegoRegister = () => {
                 style={{
                   marginLeft: '10px',
                   padding: '8px 16px',
-                  backgroundColor: '#3498db',
+                  backgroundColor: '#000000',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -1278,7 +1278,7 @@ const LegoRegister = () => {
                 boxShadow: editingIndex === index ? '0 4px 15px rgba(52, 152, 219, 0.3)' : '0 2px 10px rgba(0,0,0,0.1)',
                 overflow: 'hidden',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                border: editingIndex === index ? '2px solid #3498db' : 'none'
+                border: editingIndex === index ? '2px solid #000000' : 'none'
               }}
               onMouseOver={(e) => {
                 if (editingIndex !== index) {
@@ -1297,7 +1297,7 @@ const LegoRegister = () => {
                   style={{
                     height: '150px',
                     overflow: 'hidden',
-                    backgroundColor: '#f8f9fa',
+                    backgroundColor: '#f8f8f8',
                     cursor: 'pointer',
                     position: 'relative'
                   }}
@@ -1322,7 +1322,7 @@ const LegoRegister = () => {
                     position: 'absolute',
                     top: '5px',
                     right: '5px',
-                    backgroundColor: 'rgba(52, 152, 219, 0.9)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
                     color: 'white',
                     padding: '2px 6px',
                     borderRadius: '3px',
@@ -1355,13 +1355,13 @@ const LegoRegister = () => {
                     display: lego['이미지 URL'] ? 'none' : 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#95a5a6',
+                    color: '#666666',
                     fontSize: '2rem',
                     flexDirection: 'column',
                     gap: '5px'
                   }}>
                     🧱
-                    <div style={{ fontSize: '0.7rem', color: '#7f8c8d' }}>
+                    <div style={{ fontSize: '0.7rem', color: '#666666' }}>
                       클릭하여 Brickset에서 확인
                     </div>
                   </div>
@@ -1382,7 +1382,7 @@ const LegoRegister = () => {
                           onClick={saveEdit}
                           style={{
                             padding: '4px 8px',
-                            backgroundColor: '#27ae60',
+                            backgroundColor: '#000000',
                             color: 'white',
                             border: 'none',
                             borderRadius: '3px',
@@ -1397,7 +1397,7 @@ const LegoRegister = () => {
                           onClick={cancelEdit}
                           style={{
                             padding: '4px 8px',
-                            backgroundColor: '#95a5a6',
+                            backgroundColor: '#666666',
                             color: 'white',
                             border: 'none',
                             borderRadius: '3px',
@@ -1415,7 +1415,7 @@ const LegoRegister = () => {
                           onClick={() => startEdit(index, lego)}
                           style={{
                             padding: '4px 8px',
-                            backgroundColor: '#3498db',
+                            backgroundColor: '#000000',
                             color: 'white',
                             border: 'none',
                             borderRadius: '3px',
@@ -1430,7 +1430,7 @@ const LegoRegister = () => {
                           onClick={() => deleteLego(lego.id)}
                           style={{
                             padding: '4px 8px',
-                            backgroundColor: '#e74c3c',
+                            backgroundColor: '#000000',
                             color: 'white',
                             border: 'none',
                             borderRadius: '3px',
@@ -1450,7 +1450,7 @@ const LegoRegister = () => {
                     <div>
                       <h3 style={{
                         fontSize: '1rem',
-                        color: '#3498db',
+                        color: '#000000',
                         marginBottom: '15px',
                         fontWeight: 'bold'
                       }}>
@@ -1460,7 +1460,7 @@ const LegoRegister = () => {
                       {/* 수정 폼 */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <div>
-                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>제품명</label>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>제품명</label>
                           <input
                             type="text"
                             name="productName"
@@ -1478,7 +1478,7 @@ const LegoRegister = () => {
                         </div>
 
                         <div>
-                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>테마</label>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>테마</label>
                           <input
                             type="text"
                             name="theme"
@@ -1497,7 +1497,7 @@ const LegoRegister = () => {
 
                         <div style={{ display: 'flex', gap: '8px' }}>
                           <div style={{ flex: 1 }}>
-                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>레고 번호</label>
+                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>레고 번호</label>
                             <input
                               type="text"
                               name="legoNumber"
@@ -1514,7 +1514,7 @@ const LegoRegister = () => {
                             />
                           </div>
                           <div style={{ flex: 1 }}>
-                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>출시일</label>
+                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>출시일</label>
                             <input
                               type="date"
                               name="releaseDate"
@@ -1534,7 +1534,7 @@ const LegoRegister = () => {
 
                         <div style={{ display: 'flex', gap: '8px' }}>
                           <div style={{ flex: 1 }}>
-                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>구입일</label>
+                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>구입일</label>
                             <input
                               type="date"
                               name="purchaseDate"
@@ -1554,7 +1554,7 @@ const LegoRegister = () => {
 
                         <div style={{ display: 'flex', gap: '8px' }}>
                           <div style={{ flex: 1 }}>
-                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>정가</label>
+                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>정가</label>
                             <input
                               type="number"
                               name="retailPrice"
@@ -1571,7 +1571,7 @@ const LegoRegister = () => {
                             />
                           </div>
                           <div style={{ flex: 1 }}>
-                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>구입가</label>
+                            <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>구입가</label>
                             <input
                               type="number"
                               name="purchasePrice"
@@ -1590,7 +1590,7 @@ const LegoRegister = () => {
                         </div>
 
                         <div>
-                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>현재 시세 (선택사항)</label>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>현재 시세 (선택사항)</label>
                           <input
                             type="number"
                             name="currentPrice"
@@ -1608,7 +1608,7 @@ const LegoRegister = () => {
                         </div>
 
                         <div>
-                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#2c3e50' }}>상태</label>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#000000' }}>상태</label>
                           <select
                             name="status"
                             value={editFormData.status || ''}
@@ -1642,7 +1642,7 @@ const LegoRegister = () => {
                     <div>
                       <h3 style={{
                         fontSize: '1.1rem',
-                        color: '#2c3e50',
+                        color: '#000000',
                         marginBottom: '10px',
                         fontWeight: 'bold'
                       }}>
@@ -1650,45 +1650,45 @@ const LegoRegister = () => {
                       </h3>
 
                   <div style={{ marginBottom: '8px' }}>
-                    <strong style={{ color: '#34495e', fontSize: '0.9rem' }}>레고 번호:</strong>
-                    <span style={{ marginLeft: '8px', color: '#7f8c8d', fontSize: '0.9rem' }}>
+                    <strong style={{ color: '#000000', fontSize: '0.9rem' }}>레고 번호:</strong>
+                    <span style={{ marginLeft: '8px', color: '#666666', fontSize: '0.9rem' }}>
                       {lego['레고 번호']}
                     </span>
                   </div>
 
                   <div style={{ marginBottom: '8px' }}>
-                    <strong style={{ color: '#34495e', fontSize: '0.9rem' }}>테마:</strong>
-                    <span style={{ marginLeft: '8px', color: '#7f8c8d', fontSize: '0.9rem' }}>
+                    <strong style={{ color: '#000000', fontSize: '0.9rem' }}>테마:</strong>
+                    <span style={{ marginLeft: '8px', color: '#666666', fontSize: '0.9rem' }}>
                       {lego['테마'] || '미설정'}
                     </span>
                   </div>
 
                   <div style={{ marginBottom: '8px' }}>
-                    <strong style={{ color: '#34495e', fontSize: '0.9rem' }}>출시일:</strong>
-                    <span style={{ marginLeft: '8px', color: '#7f8c8d', fontSize: '0.9rem' }}>
+                    <strong style={{ color: '#000000', fontSize: '0.9rem' }}>출시일:</strong>
+                    <span style={{ marginLeft: '8px', color: '#666666', fontSize: '0.9rem' }}>
                       {lego['출시일']}
                     </span>
                   </div>
 
                   <div style={{ marginBottom: '8px' }}>
-                    <strong style={{ color: '#34495e', fontSize: '0.9rem' }}>구입일:</strong>
-                    <span style={{ marginLeft: '8px', color: '#7f8c8d', fontSize: '0.9rem' }}>
+                    <strong style={{ color: '#000000', fontSize: '0.9rem' }}>구입일:</strong>
+                    <span style={{ marginLeft: '8px', color: '#666666', fontSize: '0.9rem' }}>
                       {lego['구입일']}
                     </span>
                   </div>
 
                   <div style={{ marginBottom: '8px' }}>
-                    <strong style={{ color: '#34495e', fontSize: '0.9rem' }}>상태:</strong>
+                    <strong style={{ color: '#000000', fontSize: '0.9rem' }}>상태:</strong>
                     <span style={{ 
                       marginLeft: '8px', 
                       fontSize: '0.9rem',
                       color: (() => {
                         const status = lego['상태'];
-                        if (status === '판매 완료') return '#e74c3c';
-                        if (status === '조립 완료') return '#27ae60';
-                        if (status === '미개봉') return '#3498db';
+                        if (status === '판매 완료') return '#000000';
+                        if (status === '조립 완료') return '#000000';
+                        if (status === '미개봉') return '#000000';
                         if (status === '전시 중') return '#f39c12';
-                        return '#7f8c8d';
+                        return '#666666';
                       })(),
                       fontWeight: 'bold'
                     }}>
@@ -1702,38 +1702,38 @@ const LegoRegister = () => {
                     gap: '10px',
                     marginTop: '10px',
                     padding: '10px',
-                    backgroundColor: '#ecf0f1',
+                    backgroundColor: '#f0f0f0',
                     borderRadius: '6px'
                   }}>
                     <div>
-                      <div style={{ fontSize: '0.8rem', color: '#7f8c8d' }}>정가</div>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#e74c3c' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#666666' }}>정가</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#000000' }}>
                         {parseInt(lego['정가 (원)']).toLocaleString()}원
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '0.8rem', color: '#7f8c8d' }}>구입가</div>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#3498db' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#666666' }}>구입가</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#000000' }}>
                         {parseInt(lego['구입 가격 (원)']).toLocaleString()}원
                       </div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.8rem', color: '#7f8c8d' }}>현재시세</div>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: lego['현재 시세 (원)'] ? '#27ae60' : '#95a5a6' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#666666' }}>현재시세</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: lego['현재 시세 (원)'] ? '#000000' : '#666666' }}>
                         {lego['현재 시세 (원)'] ? parseInt(lego['현재 시세 (원)']).toLocaleString() + '원' : '미조사'}
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '0.8rem', color: '#7f8c8d' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#666666' }}>
                         수익률*
                       </div>
                       <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: (() => {
                         const profitRate = calculateProfitRate(lego);
-                        if (profitRate > 10) return '#27ae60';  // 좋은 수익률 (녹색)
+                        if (profitRate > 10) return '#000000';  // 좋은 수익률 (녹색)
                         if (profitRate > 0) return '#f39c12';   // 약간의 수익 (주황색)
-                        if (profitRate < -10) return '#e74c3c'; // 큰 손실 (빨간색)
+                        if (profitRate < -10) return '#000000'; // 큰 손실 (빨간색)
                         if (profitRate < 0) return '#e67e22';   // 작은 손실 (어두운 주황색)
-                        return '#95a5a6'; // 무변화 (회색)
+                        return '#666666'; // 무변화 (회색)
                       })()} }>
                         {(() => {
                           const profitRate = calculateProfitRate(lego);
@@ -1765,26 +1765,26 @@ const LegoRegister = () => {
                           marginTop: '8px',
                           padding: '8px',
                           backgroundColor: (() => {
-                            if (profitRate > 10) return '#d5f4e6'; // 좋은 수익 (연한 녹색)
+                            if (profitRate > 10) return '#f0f0f0'; // 좋은 수익 (연한 녹색)
                             if (profitRate > 0) return '#fff3cd';  // 약간의 수익 (연한 노랑)
-                            if (profitRate < -10) return '#f8d7da'; // 큰 손실 (연한 빨강)
+                            if (profitRate < -10) return '#f0f0f0'; // 큰 손실 (연한 빨강)
                             if (profitRate < 0) return '#ffeaa7';  // 작은 손실 (연한 주황)
                             return '#e9ecef'; // 무변화 (연한 회색)
                           })(),
                           borderRadius: '4px',
                           textAlign: 'center',
                           border: `1px solid ${(() => {
-                            if (profitRate > 10) return '#27ae60';
+                            if (profitRate > 10) return '#000000';
                             if (profitRate > 0) return '#f39c12';
-                            if (profitRate < -10) return '#e74c3c';
+                            if (profitRate < -10) return '#000000';
                             if (profitRate < 0) return '#e67e22';
-                            return '#95a5a6';
+                            return '#666666';
                           })()}`
                         }}>
                           <div style={{
                             fontSize: '0.8rem',
                             color: (() => {
-                              if (profitRate > 10) return '#1e8449';
+                              if (profitRate > 10) return '#000000';
                               if (profitRate > 0) return '#b7950b';
                               if (profitRate < -10) return '#922b21';
                               if (profitRate < 0) return '#a04000';
@@ -1815,7 +1815,7 @@ const LegoRegister = () => {
                       <div style={{
                         marginTop: '8px',
                         fontSize: '0.7rem',
-                        color: '#95a5a6',
+                        color: '#666666',
                         textAlign: 'right'
                       }}>
                         등록: {lego['등록 시간']}
@@ -1837,7 +1837,7 @@ const LegoRegister = () => {
               onClick={() => downloadExcelFile(legoList)}
               style={{
                 padding: '10px 20px',
-                backgroundColor: '#27ae60',
+                backgroundColor: '#000000',
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -1848,11 +1848,11 @@ const LegoRegister = () => {
                 transition: 'all 0.3s ease'
               }}
               onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#229954';
+                e.target.style.backgroundColor = '#333333';
                 e.target.style.transform = 'translateY(-1px)';
               }}
               onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#27ae60';
+                e.target.style.backgroundColor = '#000000';
                 e.target.style.transform = 'translateY(0)';
               }}
             >
@@ -1863,7 +1863,7 @@ const LegoRegister = () => {
               onClick={() => setCurrentPage('register')}
               style={{
                 padding: '10px 20px',
-                backgroundColor: '#3498db',
+                backgroundColor: '#000000',
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -1874,11 +1874,11 @@ const LegoRegister = () => {
                 transition: 'all 0.3s ease'
               }}
               onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#2980b9';
+                e.target.style.backgroundColor = '#333333';
                 e.target.style.transform = 'translateY(-1px)';
               }}
               onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#3498db';
+                e.target.style.backgroundColor = '#000000';
                 e.target.style.transform = 'translateY(0)';
               }}
             >
@@ -1892,12 +1892,12 @@ const LegoRegister = () => {
 
   // 레고 일괄 등록 컴포넌트
   const renderBulkRegister = () => (
-    <div style={{ padding: '20px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+    <div style={{ padding: '20px', backgroundColor: '#f8f8f8', minHeight: '100vh' }}>
       <h1 style={{
         textAlign: 'center', 
         fontSize: '1.5rem', 
         padding: '15px', 
-        background: '#e74c3c', 
+        background: '#000000', 
         color: 'white', 
         margin: '0 0 20px 0',
         borderRadius: '8px',
@@ -1917,28 +1917,28 @@ const LegoRegister = () => {
         <div style={{ marginBottom: '30px' }}>
           <h3 style={{
             fontSize: '1.5rem',
-            color: '#2c3e50',
+            color: '#000000',
             marginBottom: '15px'
           }}>
             📋 엑셀 파일 업로드
           </h3>
-          <p style={{ color: '#7f8c8d', marginBottom: '20px', lineHeight: '1.6' }}>
+          <p style={{ color: '#666666', marginBottom: '20px', lineHeight: '1.6' }}>
             엑셀 파일(.xlsx)을 업로드하여 여러 레고를 한번에 등록할 수 있습니다.<br/>
             파일의 첫 번째 행은 헤더로 인식되며, 다음 열 순서를 맞춰주세요:
           </p>
           <div style={{
-            backgroundColor: '#ecf0f1',
+            backgroundColor: '#f0f0f0',
             padding: '20px',
             borderRadius: '8px',
             marginBottom: '20px'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-              <strong style={{ color: '#2c3e50' }}>필요한 열 순서:</strong>
+              <strong style={{ color: '#000000' }}>필요한 열 순서:</strong>
               <button
                 onClick={downloadTemplate}
                 style={{
                   padding: '10px 20px',
-                  backgroundColor: '#27ae60',
+                  backgroundColor: '#000000',
                   color: 'white',
                   border: 'none',
                   borderRadius: '6px',
@@ -1949,18 +1949,18 @@ const LegoRegister = () => {
                   transition: 'all 0.3s ease'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.backgroundColor = '#229954';
+                  e.target.style.backgroundColor = '#333333';
                   e.target.style.transform = 'translateY(-1px)';
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.backgroundColor = '#27ae60';
+                  e.target.style.backgroundColor = '#000000';
                   e.target.style.transform = 'translateY(0)';
                 }}
               >
                 📥 엑셀 양식 다운로드
               </button>
             </div>
-            <ul style={{ margin: '10px 0 0 20px', color: '#34495e' }}>
+            <ul style={{ margin: '10px 0 0 20px', color: '#000000' }}>
               <li>출시일 (예: 2023-01-15)</li>
               <li>레고 번호 (예: 6036)</li>
               <li>제품명 (예: 레고 캐슬)</li>
@@ -1974,11 +1974,11 @@ const LegoRegister = () => {
             <div style={{
               marginTop: '15px',
               padding: '10px',
-              backgroundColor: '#d5f4e6',
+              backgroundColor: '#f0f0f0',
               borderRadius: '4px',
-              border: '1px solid #27ae60'
+              border: '1px solid #000000'
             }}>
-              <small style={{ color: '#1e8449', fontWeight: 'bold' }}>
+              <small style={{ color: '#000000', fontWeight: 'bold' }}>
                 💡 팁: 양식을 다운로드하여 샘플 데이터를 참고하고, 기존 데이터를 삭제한 후 새로운 데이터를 입력하세요.
               </small>
             </div>
@@ -1992,9 +1992,9 @@ const LegoRegister = () => {
               width: '100%',
               padding: '15px',
               fontSize: '1.1rem',
-              border: '2px dashed #3498db',
+              border: '2px dashed #000000',
               borderRadius: '8px',
-              backgroundColor: '#f8f9fa',
+              backgroundColor: '#f8f8f8',
               cursor: 'pointer'
             }}
           />
@@ -2005,7 +2005,7 @@ const LegoRegister = () => {
           <div style={{ marginTop: '30px' }}>
             <h4 style={{
               fontSize: '1.3rem',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '15px'
             }}>
               📊 미리보기 ({previewData.length}개 항목)
@@ -2021,22 +2021,22 @@ const LegoRegister = () => {
                 borderCollapse: 'collapse'
               }}>
                 <thead>
-                  <tr style={{ backgroundColor: '#34495e', color: 'white' }}>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>출시일</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>레고 번호</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>제품명</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>테마</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>구입일</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>정가</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>구입가</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>현재시세</th>
-                    <th style={{ padding: '10px', border: '1px solid #2c3e50' }}>상태</th>
+                  <tr style={{ backgroundColor: '#000000', color: 'white' }}>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>출시일</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>레고 번호</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>제품명</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>테마</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>구입일</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>정가</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>구입가</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>현재시세</th>
+                    <th style={{ padding: '10px', border: '1px solid #000000' }}>상태</th>
                   </tr>
                 </thead>
                 <tbody>
                   {previewData.map((row, index) => (
                     <tr key={index} style={{
-                      backgroundColor: index % 2 === 0 ? 'white' : '#f8f9fa'
+                      backgroundColor: index % 2 === 0 ? 'white' : '#f8f8f8'
                     }}>
                       <td style={{ padding: '8px', border: '1px solid #bdc3c7' }}>{row.releaseDate}</td>
                       <td style={{ padding: '8px', border: '1px solid #bdc3c7' }}>{row.legoNumber}</td>
@@ -2058,7 +2058,7 @@ const LegoRegister = () => {
               style={{
                 width: '100%',
                 padding: '20px',
-                backgroundColor: '#e74c3c',
+                backgroundColor: '#000000',
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
@@ -2070,12 +2070,12 @@ const LegoRegister = () => {
                 transition: 'all 0.3s ease'
               }}
               onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#c0392b';
+                e.target.style.backgroundColor = '#333333';
                 e.target.style.transform = 'translateY(-2px)';
                 e.target.style.boxShadow = '0 6px 16px rgba(231, 76, 60, 0.4)';
               }}
               onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#e74c3c';
+                e.target.style.backgroundColor = '#000000';
                 e.target.style.transform = 'translateY(0)';
                 e.target.style.boxShadow = '0 4px 12px rgba(231, 76, 60, 0.3)';
               }}
@@ -2094,7 +2094,7 @@ const LegoRegister = () => {
     const analysisData = getAnalysisData();
 
     return (
-      <div style={{ padding: '20px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+      <div style={{ padding: '20px', backgroundColor: '#f8f8f8', minHeight: '100vh' }}>
         <h1 style={{
           textAlign: 'center',
           fontSize: '1.5rem',
@@ -2120,17 +2120,17 @@ const LegoRegister = () => {
             padding: '20px',
             borderRadius: '10px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-            border: '3px solid #3498db'
+            border: '3px solid #000000'
           }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📦</div>
-              <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#3498db', marginBottom: '5px' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#000000', marginBottom: '5px' }}>
                 {analysisData.totalItems.toLocaleString()}개
               </div>
-              <div style={{ color: '#7f8c8d', fontSize: '0.9rem' }}>
+              <div style={{ color: '#666666', fontSize: '0.9rem' }}>
                 전체 레고 수량
               </div>
-              <div style={{ color: '#27ae60', fontSize: '0.8rem', marginTop: '5px' }}>
+              <div style={{ color: '#000000', fontSize: '0.8rem', marginTop: '5px' }}>
                 분석 가능: {analysisData.validItems.toLocaleString()}개
               </div>
             </div>
@@ -2141,14 +2141,14 @@ const LegoRegister = () => {
             padding: '20px',
             borderRadius: '10px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-            border: '3px solid #e74c3c'
+            border: '3px solid #000000'
           }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '10px' }}>💰</div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#e74c3c', marginBottom: '5px' }}>
+              <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#000000', marginBottom: '5px' }}>
                 {analysisData.totalInvestment.toLocaleString()}원
               </div>
-              <div style={{ color: '#7f8c8d', fontSize: '0.9rem' }}>
+              <div style={{ color: '#666666', fontSize: '0.9rem' }}>
                 총 투자 금액
               </div>
             </div>
@@ -2159,14 +2159,14 @@ const LegoRegister = () => {
             padding: '20px',
             borderRadius: '10px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-            border: '3px solid #27ae60'
+            border: '3px solid #000000'
           }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📈</div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#27ae60', marginBottom: '5px' }}>
+              <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#000000', marginBottom: '5px' }}>
                 {analysisData.totalCurrentValue.toLocaleString()}원
               </div>
-              <div style={{ color: '#7f8c8d', fontSize: '0.9rem' }}>
+              <div style={{ color: '#666666', fontSize: '0.9rem' }}>
                 현재 평가 금액
               </div>
             </div>
@@ -2177,7 +2177,7 @@ const LegoRegister = () => {
             padding: '20px',
             borderRadius: '10px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-            border: `3px solid ${analysisData.totalProfit >= 0 ? '#27ae60' : '#e74c3c'}`
+            border: `3px solid ${analysisData.totalProfit >= 0 ? '#000000' : '#000000'}`
           }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '10px' }}>
@@ -2186,18 +2186,18 @@ const LegoRegister = () => {
               <div style={{ 
                 fontSize: '1.4rem', 
                 fontWeight: 'bold', 
-                color: analysisData.totalProfit >= 0 ? '#27ae60' : '#e74c3c', 
+                color: analysisData.totalProfit >= 0 ? '#000000' : '#000000', 
                 marginBottom: '5px' 
               }}>
                 {analysisData.totalProfit >= 0 ? '+' : ''}{analysisData.totalProfit.toLocaleString()}원
               </div>
-              <div style={{ color: '#7f8c8d', fontSize: '0.9rem' }}>
+              <div style={{ color: '#666666', fontSize: '0.9rem' }}>
                 총 수익/손실
               </div>
               <div style={{ 
                 fontSize: '1.1rem', 
                 fontWeight: 'bold', 
-                color: analysisData.totalProfitRate >= 0 ? '#27ae60' : '#e74c3c',
+                color: analysisData.totalProfitRate >= 0 ? '#000000' : '#000000',
                 marginTop: '5px'
               }}>
                 ({analysisData.totalProfitRate.toFixed(1)}%)
@@ -2216,10 +2216,10 @@ const LegoRegister = () => {
         }}>
           <h2 style={{
             fontSize: '1.3rem',
-            color: '#2c3e50',
+            color: '#000000',
             marginBottom: '20px',
             textAlign: 'center',
-            borderBottom: '2px solid #ecf0f1',
+            borderBottom: '2px solid #f0f0f0',
             paddingBottom: '10px'
           }}>
             📊 수익률 구간별 분포
@@ -2231,11 +2231,11 @@ const LegoRegister = () => {
           }}>
             {Object.entries(analysisData.profitRanges).map(([range, count]) => {
               const colors = {
-                '20% 이상': { bg: '#d5f4e6', border: '#27ae60', text: '#1e8449' },
+                '20% 이상': { bg: '#f0f0f0', border: '#000000', text: '#000000' },
                 '10-20%': { bg: '#fff3cd', border: '#f39c12', text: '#b7950b' },
                 '0-10%': { bg: '#e9ecef', border: '#6c757d', text: '#495057' },
                 '0~-10%': { bg: '#ffeaa7', border: '#e67e22', text: '#a04000' },
-                '-10% 이하': { bg: '#f8d7da', border: '#e74c3c', text: '#922b21' }
+                '-10% 이하': { bg: '#f0f0f0', border: '#000000', text: '#922b21' }
               };
               const color = colors[range];
               
@@ -2278,10 +2278,10 @@ const LegoRegister = () => {
         }}>
           <h2 style={{
             fontSize: '1.3rem',
-            color: '#2c3e50',
+            color: '#000000',
             marginBottom: '20px',
             textAlign: 'center',
-            borderBottom: '2px solid #ecf0f1',
+            borderBottom: '2px solid #f0f0f0',
             paddingBottom: '10px'
           }}>
             🎯 테마별 수익률 분석
@@ -2297,45 +2297,45 @@ const LegoRegister = () => {
               .map(([theme, data]) => (
               <div key={theme} style={{
                 padding: '20px',
-                backgroundColor: '#f8f9fa',
+                backgroundColor: '#f8f8f8',
                 borderRadius: '8px',
-                border: `3px solid ${data.profitRate >= 0 ? '#27ae60' : '#e74c3c'}`
+                border: `3px solid ${data.profitRate >= 0 ? '#000000' : '#000000'}`
               }}>
                 <div style={{
                   fontSize: '1.1rem',
                   fontWeight: 'bold',
-                  color: '#2c3e50',
+                  color: '#000000',
                   marginBottom: '15px',
                   textAlign: 'center'
                 }}>
                   🎨 {theme}
                 </div>
-                <div style={{ fontSize: '0.9rem', color: '#7f8c8d', marginBottom: '10px' }}>
+                <div style={{ fontSize: '0.9rem', color: '#666666', marginBottom: '10px' }}>
                   <strong>수량:</strong> {data.count}개
                 </div>
-                <div style={{ fontSize: '0.9rem', color: '#7f8c8d', marginBottom: '10px' }}>
+                <div style={{ fontSize: '0.9rem', color: '#666666', marginBottom: '10px' }}>
                   <strong>투자액:</strong> {data.totalInvestment.toLocaleString()}원
                 </div>
-                <div style={{ fontSize: '0.9rem', color: '#7f8c8d', marginBottom: '15px' }}>
+                <div style={{ fontSize: '0.9rem', color: '#666666', marginBottom: '15px' }}>
                   <strong>현재값:</strong> {data.totalCurrentValue.toLocaleString()}원
                 </div>
                 <div style={{
                   textAlign: 'center',
                   padding: '12px',
-                  backgroundColor: data.profitRate >= 0 ? '#d5f4e6' : '#f8d7da',
+                  backgroundColor: data.profitRate >= 0 ? '#f0f0f0' : '#f0f0f0',
                   borderRadius: '6px'
                 }}>
                   <div style={{
                     fontSize: '1.3rem',
                     fontWeight: 'bold',
-                    color: data.profitRate >= 0 ? '#27ae60' : '#e74c3c'
+                    color: data.profitRate >= 0 ? '#000000' : '#000000'
                   }}>
                     {data.profitRate >= 0 ? '+' : ''}{data.profit.toLocaleString()}원
                   </div>
                   <div style={{
                     fontSize: '1.1rem',
                     fontWeight: 'bold',
-                    color: data.profitRate >= 0 ? '#27ae60' : '#e74c3c'
+                    color: data.profitRate >= 0 ? '#000000' : '#000000'
                   }}>
                     ({data.profitRate.toFixed(1)}%)
                   </div>
@@ -2358,14 +2358,14 @@ const LegoRegister = () => {
             padding: '25px',
             borderRadius: '10px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-            border: '3px solid #27ae60'
+            border: '3px solid #000000'
           }}>
             <h2 style={{
               fontSize: '1.2rem',
-              color: '#27ae60',
+              color: '#000000',
               marginBottom: '20px',
               textAlign: 'center',
-              borderBottom: '2px solid #d5f4e6',
+              borderBottom: '2px solid #f0f0f0',
               paddingBottom: '10px'
             }}>
               🏆 TOP 5 수익률
@@ -2377,22 +2377,22 @@ const LegoRegister = () => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '12px',
-                  backgroundColor: '#d5f4e6',
+                  backgroundColor: '#f0f0f0',
                   borderRadius: '6px',
-                  border: '1px solid #27ae60'
+                  border: '1px solid #000000'
                 }}>
                   <div>
-                    <div style={{ fontWeight: 'bold', color: '#2c3e50', fontSize: '0.9rem' }}>
+                    <div style={{ fontWeight: 'bold', color: '#000000', fontSize: '0.9rem' }}>
                       #{lego['레고 번호']} {lego['제품명'] || '제품명 없음'}
                     </div>
-                    <div style={{ color: '#7f8c8d', fontSize: '0.8rem' }}>
+                    <div style={{ color: '#666666', fontSize: '0.8rem' }}>
                       {lego['테마'] || '미분류'}
                     </div>
                   </div>
                   <div style={{
                     fontSize: '1.1rem',
                     fontWeight: 'bold',
-                    color: '#27ae60'
+                    color: '#000000'
                   }}>
                     +{lego.profitRate.toFixed(1)}%
                   </div>
@@ -2407,14 +2407,14 @@ const LegoRegister = () => {
             padding: '25px',
             borderRadius: '10px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-            border: '3px solid #e74c3c'
+            border: '3px solid #000000'
           }}>
             <h2 style={{
               fontSize: '1.2rem',
-              color: '#e74c3c',
+              color: '#000000',
               marginBottom: '20px',
               textAlign: 'center',
-              borderBottom: '2px solid #f8d7da',
+              borderBottom: '2px solid #f0f0f0',
               paddingBottom: '10px'
             }}>
               📉 WORST 5 수익률
@@ -2426,22 +2426,22 @@ const LegoRegister = () => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '12px',
-                  backgroundColor: '#f8d7da',
+                  backgroundColor: '#f0f0f0',
                   borderRadius: '6px',
-                  border: '1px solid #e74c3c'
+                  border: '1px solid #000000'
                 }}>
                   <div>
-                    <div style={{ fontWeight: 'bold', color: '#2c3e50', fontSize: '0.9rem' }}>
+                    <div style={{ fontWeight: 'bold', color: '#000000', fontSize: '0.9rem' }}>
                       #{lego['레고 번호']} {lego['제품명'] || '제품명 없음'}
                     </div>
-                    <div style={{ color: '#7f8c8d', fontSize: '0.8rem' }}>
+                    <div style={{ color: '#666666', fontSize: '0.8rem' }}>
                       {lego['테마'] || '미분류'}
                     </div>
                   </div>
                   <div style={{
                     fontSize: '1.1rem',
                     fontWeight: 'bold',
-                    color: '#e74c3c'
+                    color: '#000000'
                   }}>
                     {lego.profitRate.toFixed(1)}%
                   </div>
@@ -2461,10 +2461,10 @@ const LegoRegister = () => {
         }}>
           <h2 style={{
             fontSize: '1.3rem',
-            color: '#2c3e50',
+            color: '#000000',
             marginBottom: '20px',
             textAlign: 'center',
-            borderBottom: '2px solid #ecf0f1',
+            borderBottom: '2px solid #f0f0f0',
             paddingBottom: '10px'
           }}>
             📅 년도별 투자 성과 분석
@@ -2474,8 +2474,8 @@ const LegoRegister = () => {
             <div style={{
               textAlign: 'center',
               padding: '40px',
-              color: '#7f8c8d',
-              backgroundColor: '#f8f9fa',
+              color: '#666666',
+              backgroundColor: '#f8f8f8',
               borderRadius: '8px'
             }}>
               <div style={{ fontSize: '3rem', marginBottom: '15px' }}>📋</div>
@@ -2501,9 +2501,9 @@ const LegoRegister = () => {
                   .map(([year, data]) => (
                   <div key={year} style={{
                     padding: '20px',
-                    backgroundColor: '#f8f9fa',
+                    backgroundColor: '#f8f8f8',
                     borderRadius: '10px',
-                    border: `3px solid ${data.profitRate >= 0 ? '#27ae60' : '#e74c3c'}`,
+                    border: `3px solid ${data.profitRate >= 0 ? '#000000' : '#000000'}`,
                     textAlign: 'center',
                     transition: 'transform 0.3s ease',
                     cursor: 'pointer'
@@ -2517,7 +2517,7 @@ const LegoRegister = () => {
                     <div style={{
                       fontSize: '1.5rem',
                       fontWeight: 'bold',
-                      color: '#3498db',
+                      color: '#000000',
                       marginBottom: '10px'
                     }}>
                       🗓️ {year}년
@@ -2529,7 +2529,7 @@ const LegoRegister = () => {
                       gap: '10px',
                       marginBottom: '15px',
                       fontSize: '0.85rem',
-                      color: '#7f8c8d'
+                      color: '#666666'
                     }}>
                       <div>
                         <strong>{data.count}</strong>개 구매
@@ -2541,27 +2541,27 @@ const LegoRegister = () => {
 
                     <div style={{
                       padding: '12px',
-                      backgroundColor: data.profitRate >= 0 ? '#d5f4e6' : '#f8d7da',
+                      backgroundColor: data.profitRate >= 0 ? '#f0f0f0' : '#f0f0f0',
                       borderRadius: '6px',
-                      border: `1px solid ${data.profitRate >= 0 ? '#27ae60' : '#e74c3c'}`
+                      border: `1px solid ${data.profitRate >= 0 ? '#000000' : '#000000'}`
                     }}>
                       <div style={{
                         fontSize: '1.1rem',
                         fontWeight: 'bold',
-                        color: data.profitRate >= 0 ? '#27ae60' : '#e74c3c'
+                        color: data.profitRate >= 0 ? '#000000' : '#000000'
                       }}>
                         {data.profitRate >= 0 ? '+' : ''}{data.profitRate.toFixed(1)}%
                       </div>
                       <div style={{
                         fontSize: '0.9rem',
-                        color: data.profitRate >= 0 ? '#1e8449' : '#922b21',
+                        color: data.profitRate >= 0 ? '#000000' : '#922b21',
                         marginTop: '3px'
                       }}>
                         {data.profit >= 0 ? '+' : ''}{(data.profit / 10000).toFixed(1)}만원
                       </div>
                       <div style={{
                         fontSize: '0.8rem',
-                        color: '#7f8c8d',
+                        color: '#666666',
                         marginTop: '5px'
                       }}>
                         평균: {data.averageProfitRate.toFixed(1)}%
@@ -2573,13 +2573,13 @@ const LegoRegister = () => {
 
               {/* 년도별 상세 분석 표 */}
               <div style={{
-                backgroundColor: '#f8f9fa',
+                backgroundColor: '#f8f8f8',
                 borderRadius: '8px',
                 padding: '20px'
               }}>
                 <h3 style={{
                   fontSize: '1.1rem',
-                  color: '#2c3e50',
+                  color: '#000000',
                   marginBottom: '15px',
                   textAlign: 'center'
                 }}>
@@ -2598,7 +2598,7 @@ const LegoRegister = () => {
                     boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                   }}>
                     <thead>
-                      <tr style={{ backgroundColor: '#34495e', color: 'white' }}>
+                      <tr style={{ backgroundColor: '#000000', color: 'white' }}>
                         <th style={{ padding: '12px', textAlign: 'center', fontSize: '0.9rem' }}>년도</th>
                         <th style={{ padding: '12px', textAlign: 'center', fontSize: '0.9rem' }}>구매수</th>
                         <th style={{ padding: '12px', textAlign: 'center', fontSize: '0.9rem' }}>투자액</th>
@@ -2613,14 +2613,14 @@ const LegoRegister = () => {
                         .sort(([a], [b]) => b.localeCompare(a))
                         .map(([year, data], index) => (
                         <tr key={year} style={{
-                          backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white',
-                          borderBottom: '1px solid #ecf0f1'
+                          backgroundColor: index % 2 === 0 ? '#f8f8f8' : 'white',
+                          borderBottom: '1px solid #f0f0f0'
                         }}>
                           <td style={{
                             padding: '12px',
                             textAlign: 'center',
                             fontWeight: 'bold',
-                            color: '#3498db',
+                            color: '#000000',
                             fontSize: '0.9rem'
                           }}>
                             {year}
@@ -2636,7 +2636,7 @@ const LegoRegister = () => {
                             padding: '12px',
                             textAlign: 'right',
                             fontSize: '0.9rem',
-                            color: '#e74c3c',
+                            color: '#000000',
                             fontWeight: 'bold'
                           }}>
                             {(data.totalInvestment / 10000).toFixed(0)}만원
@@ -2645,7 +2645,7 @@ const LegoRegister = () => {
                             padding: '12px',
                             textAlign: 'right',
                             fontSize: '0.9rem',
-                            color: '#27ae60',
+                            color: '#000000',
                             fontWeight: 'bold'
                           }}>
                             {(data.totalCurrentValue / 10000).toFixed(0)}만원
@@ -2654,7 +2654,7 @@ const LegoRegister = () => {
                             padding: '12px',
                             textAlign: 'right',
                             fontSize: '0.9rem',
-                            color: data.profit >= 0 ? '#27ae60' : '#e74c3c',
+                            color: data.profit >= 0 ? '#000000' : '#000000',
                             fontWeight: 'bold'
                           }}>
                             {data.profit >= 0 ? '+' : ''}{(data.profit / 10000).toFixed(1)}만원
@@ -2663,7 +2663,7 @@ const LegoRegister = () => {
                             padding: '12px',
                             textAlign: 'center',
                             fontSize: '0.9rem',
-                            color: data.profitRate >= 0 ? '#27ae60' : '#e74c3c',
+                            color: data.profitRate >= 0 ? '#000000' : '#000000',
                             fontWeight: 'bold'
                           }}>
                             {data.profitRate >= 0 ? '+' : ''}{data.profitRate.toFixed(1)}%
@@ -2672,7 +2672,7 @@ const LegoRegister = () => {
                             padding: '12px',
                             textAlign: 'center',
                             fontSize: '0.9rem',
-                            color: data.averageProfitRate >= 0 ? '#27ae60' : '#e74c3c',
+                            color: data.averageProfitRate >= 0 ? '#000000' : '#000000',
                             fontWeight: 'bold'
                           }}>
                             {data.averageProfitRate >= 0 ? '+' : ''}{data.averageProfitRate.toFixed(1)}%
@@ -2687,13 +2687,13 @@ const LegoRegister = () => {
                 <div style={{
                   marginTop: '20px',
                   padding: '15px',
-                  backgroundColor: '#e8f4fd',
+                  backgroundColor: '#f0f0f0',
                   borderRadius: '6px',
-                  border: '1px solid #3498db'
+                  border: '1px solid #000000'
                 }}>
                   <div style={{
                     fontSize: '0.9rem',
-                    color: '#2980b9',
+                    color: '#333333',
                     fontWeight: 'bold',
                     marginBottom: '8px'
                   }}>
@@ -2701,7 +2701,7 @@ const LegoRegister = () => {
                   </div>
                   <div style={{
                     fontSize: '0.85rem',
-                    color: '#34495e',
+                    color: '#000000',
                     lineHeight: '1.4'
                   }}>
                     • <strong>최고 수익률 년도:</strong> {
@@ -2757,12 +2757,12 @@ const LegoRegister = () => {
 
     // 레고 등록 페이지 - 세로형 레이아웃
     return (
-      <div style={{ padding: '20px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+      <div style={{ padding: '20px', backgroundColor: '#f8f8f8', minHeight: '100vh' }}>
         <h1 style={{
           textAlign: 'center', 
           fontSize: '1.5rem', 
           padding: '15px', 
-          background: '#3498db', 
+          background: '#000000', 
           color: 'white', 
           margin: '0 0 20px 0',
           borderRadius: '8px',
@@ -2785,7 +2785,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               📅 출시일
@@ -2800,7 +2800,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box',
                 backgroundColor: '#fff'
@@ -2814,7 +2814,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               🔢 레고 번호
@@ -2830,7 +2830,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box'
               }}
@@ -2843,7 +2843,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               🏷️ 제품명
@@ -2859,7 +2859,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box'
               }}
@@ -2872,7 +2872,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               🎨 테마
@@ -2887,7 +2887,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box'
               }}
@@ -2900,7 +2900,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               🛒 구입일
@@ -2915,7 +2915,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box',
                 backgroundColor: '#fff'
@@ -2929,7 +2929,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               💰 정가 (원)
@@ -2946,7 +2946,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box'
               }}
@@ -2959,7 +2959,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               💳 구입 가격 (원)
@@ -2976,7 +2976,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box'
               }}
@@ -2989,7 +2989,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               📈 현재 시세 (원)
@@ -3005,7 +3005,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box'
               }}
@@ -3018,7 +3018,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               📦 상태
@@ -3031,7 +3031,7 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #3498db',
+                border: '2px solid #000000',
                 borderRadius: '8px',
                 boxSizing: 'border-box',
                 backgroundColor: 'white'
@@ -3056,7 +3056,7 @@ const LegoRegister = () => {
               display: 'block',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#2c3e50',
+              color: '#000000',
               marginBottom: '10px'
             }}>
               🖼️ 이미지 URL
@@ -3072,11 +3072,11 @@ const LegoRegister = () => {
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
-                border: '2px solid #95a5a6',
+                border: '2px solid #666666',
                 borderRadius: '8px',
                 boxSizing: 'border-box',
-                backgroundColor: '#ecf0f1',
-                color: '#7f8c8d'
+                backgroundColor: '#f0f0f0',
+                color: '#666666'
               }}
             />
           </div>
@@ -3087,7 +3087,7 @@ const LegoRegister = () => {
             style={{
               width: '100%',
               padding: '20px',
-              backgroundColor: '#e74c3c',
+              backgroundColor: '#000000',
               color: 'white',
               border: 'none',
               borderRadius: '10px',
@@ -3099,12 +3099,12 @@ const LegoRegister = () => {
               transition: 'all 0.3s ease'
             }}
             onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#c0392b';
+              e.target.style.backgroundColor = '#333333';
               e.target.style.transform = 'translateY(-2px)';
               e.target.style.boxShadow = '0 6px 16px rgba(231, 76, 60, 0.4)';
             }}
             onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#e74c3c';
+              e.target.style.backgroundColor = '#000000';
               e.target.style.transform = 'translateY(0)';
               e.target.style.boxShadow = '0 4px 12px rgba(231, 76, 60, 0.3)';
             }}
@@ -3126,7 +3126,7 @@ const LegoRegister = () => {
           }}>
             <h3 style={{
               fontSize: '1.8rem', 
-              color: '#2c3e50', 
+              color: '#000000', 
               marginBottom: '20px',
               fontWeight: 'bold'
             }}>
@@ -3139,7 +3139,7 @@ const LegoRegister = () => {
                 maxWidth: '100%',
                 height: '300px',
                 objectFit: 'cover',
-                border: '3px solid #3498db',
+                border: '3px solid #000000',
                 borderRadius: '12px',
                 boxShadow: '0 4px 12px rgba(52, 152, 219, 0.3)'
               }}
@@ -3168,7 +3168,7 @@ const LegoRegister = () => {
           left: sidebarOpen ? '270px' : '20px',
           width: '50px',
           height: '50px',
-          backgroundColor: '#3498db',
+          backgroundColor: '#000000',
           color: 'white',
           border: 'none',
           borderRadius: '50%',
@@ -3181,8 +3181,8 @@ const LegoRegister = () => {
           alignItems: 'center',
           justifyContent: 'center'
         }}
-        onMouseOver={(e) => e.target.style.backgroundColor = '#2980b9'}
-        onMouseOut={(e) => e.target.style.backgroundColor = '#3498db'}
+        onMouseOver={(e) => e.target.style.backgroundColor = '#333333'}
+        onMouseOut={(e) => e.target.style.backgroundColor = '#000000'}
       >
         ☰
       </button>

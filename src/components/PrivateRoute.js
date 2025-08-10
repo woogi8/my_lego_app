@@ -19,12 +19,12 @@ const PrivateRoute = ({ children }) => {
         <div style={{
           width: '50px',
           height: '50px',
-          border: '4px solid #f3f3f3',
-          borderTop: '4px solid #667eea',
+          border: '4px solid #f0f0f0',
+          borderTop: '4px solid #000000',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
-        <p style={{ color: '#666' }}>로딩 중...</p>
+        <p style={{ color: '#666666' }}>로딩 중...</p>
         <style>{`
           @keyframes spin {
             0% { transform: rotate(0deg); }

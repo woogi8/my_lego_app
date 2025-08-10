@@ -17,7 +17,9 @@
       "Bash(git add:*)",
       "Bash(gh:*)",
       "Bash(git remote add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(set PORT=3000)",
+      "Bash($env:PORT=3000)"
     ],
     "deny": []
   }

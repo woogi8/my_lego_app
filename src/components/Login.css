@@ -6,8 +6,8 @@
   justify-content: center;
   background: var(--apple-gray-light);
   background-image: 
-    radial-gradient(circle at 25% 25%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(0, 122, 255, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 25% 25%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 0, 0, 0.03) 0%, transparent 50%);
 }
 
 .login-content {
@@ -62,11 +62,11 @@
 }
 
 .error-message {
-  background: rgba(255, 59, 48, 0.1);
-  color: var(--apple-red);
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--apple-black);
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 59, 48, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   font-size: 15px;
   display: flex;
   align-items: center;
@@ -142,13 +142,13 @@
   }
 }
 
-/* Dark Mode Support (iOS/macOS style) */
+/* Dark Mode Support (Black & White style) */
 @media (prefers-color-scheme: dark) {
   .login-container {
     background: var(--apple-black);
     background-image: 
-      radial-gradient(circle at 25% 25%, rgba(0, 122, 255, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(0, 122, 255, 0.08) 0%, transparent 50%);
+      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
   }
   
   .logo h1 {
@@ -156,14 +156,14 @@
   }
   
   .login-form-container {
-    background: rgba(29, 29, 31, 0.9);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
   .form-input {
-    background-color: rgba(58, 58, 60, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: var(--apple-white);
   }
   
@@ -172,8 +172,8 @@
   }
   
   .form-input:focus {
-    background-color: rgba(58, 58, 60, 1);
-    border-color: var(--apple-blue);
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--apple-white);
   }
   
   .form-label {
