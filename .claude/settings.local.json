@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm start)",
+      "Bash(taskkill:*)",
+      "Bash(wmic process where processid=8180 delete:*)",
+      "Bash(curl:*)",
+      "Bash(wmic process where processid=20384 delete:*)",
+      "Bash(wmic process where processid=12096 delete:*)",
+      "Bash(wmic process where processid=20132 delete:*)",
+      "Bash(wmic process where processid=18552 delete:*)",
+      "Bash(wmic process where processid=32700 delete:*)",
+      "Bash(node:*)",
+      "Bash(touch:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}
