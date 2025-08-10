@@ -1,11 +1,7 @@
-import React, { useState, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import MainScreen from './components/MainScreen';
-import Layout from './components/Layout';
 import LegoRegister from './components/LegoRegister';
-import LegoList from './components/LegoList';
 import './App.css';
 
 // 헤더에 로그아웃 버튼을 포함하는 컴포넌트
@@ -51,29 +47,14 @@ const AppHeader = () => {
 };
 
 function AppContent() {
-  const [isEntered, setIsEntered] = useState(false);
   const { isAuthenticated } = useContext(AuthContext);
-
-  const handleEnter = () => {
-    setIsEntered(true);
-  };
 
   // 로그인되지 않은 상태에서는 PrivateRoute가 로그인 화면을 보여줌
   if (!isAuthenticated) {
     return <PrivateRoute />;
   }
 
-  // 로그인된 상태에서 메인 화면을 아직 거치지 않았다면 메인 화면 표시
-  if (!isEntered) {
-    return (
-      <>
-        <AppHeader />
-        <MainScreen onEnter={handleEnter} />
-      </>
-    );
-  }
-
-  // 로그인되고 메인 화면을 거친 후 레고 관리 화면 표시
+  // 로그인된 상태에서 바로 레고 관리 화면 표시
   return (
     <>
       <AppHeader />
