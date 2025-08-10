@@ -27,6 +27,7 @@ const LegoRegister = () => {
   const [userModifiedImageUrl, setUserModifiedImageUrl] = useState(false);
   const [fileStatus, setFileStatus] = useState(null);
   const [selectedTheme, setSelectedTheme] = useState('전체');
+  const [selectedYear, setSelectedYear] = useState('전체');
   const [sortBy, setSortBy] = useState('none');
   const [filteredAndSortedList, setFilteredAndSortedList] = useState([]);
 
@@ -150,8 +151,26 @@ const LegoRegister = () => {
     return ['전체', ...themes];
   };
 
+  // 년도 목록 추출 함수 (출시일 기준)
+  const getUniqueYears = (data) => {
+    const years = data
+      .map(lego => {
+        const releaseDate = lego['출시일'];
+        if (!releaseDate) return '';
+        try {
+          return new Date(releaseDate).getFullYear().toString();
+        } catch {
+          return '';
+        }
+      })
+      .filter(year => year.trim() !== '')
+      .filter((year, index, arr) => arr.indexOf(year) === index)
+      .sort((a, b) => b.localeCompare(a)); // 최신 년도부터 정렬
+    return ['전체', ...years];
+  };
+
   // 필터링 및 정렬 함수
-  const applyFilterAndSort = (data, theme, sortOrder) => {
+  const applyFilterAndSort = (data, theme, year, sortOrder) => {
     // data가 배열이 아닌 경우 빈 배열 반환
     if (!Array.isArray(data)) {
       return [];
@@ -161,7 +180,21 @@ const LegoRegister = () => {
 
     // 테마 필터링
     if (theme !== '전체') {
-      filtered = data.filter(lego => lego['테마'] === theme);
+      filtered = filtered.filter(lego => lego['테마'] === theme);
+    }
+
+    // 년도 필터링 (출시일 기준)
+    if (year !== '전체') {
+      filtered = filtered.filter(lego => {
+        const releaseDate = lego['출시일'];
+        if (!releaseDate) return false;
+        try {
+          const releaseYear = new Date(releaseDate).getFullYear().toString();
+          return releaseYear === year;
+        } catch {
+          return false;
+        }
+      });
     }
 
     // 정렬
@@ -181,6 +214,18 @@ const LegoRegister = () => {
         const priceB = parseFloat(b['현재 시세 (원)']) || 0;
         return priceA - priceB;
       });
+    } else if (sortOrder === 'release-desc') {
+      filtered = [...filtered].sort((a, b) => {
+        const dateA = a['출시일'] ? new Date(a['출시일']) : new Date(0);
+        const dateB = b['출시일'] ? new Date(b['출시일']) : new Date(0);
+        return dateB - dateA;
+      });
+    } else if (sortOrder === 'release-asc') {
+      filtered = [...filtered].sort((a, b) => {
+        const dateA = a['출시일'] ? new Date(a['출시일']) : new Date(0);
+        const dateB = b['출시일'] ? new Date(b['출시일']) : new Date(0);
+        return dateA - dateB;
+      });
     } else if (sortOrder === 'name-asc') {
       filtered = [...filtered].sort((a, b) => (a['제품명'] || '').localeCompare(b['제품명'] || ''));
     }
@@ -190,9 +235,9 @@ const LegoRegister = () => {
 
   // legoList가 변경될 때 필터링 및 정렬 적용
   useEffect(() => {
-    const result = applyFilterAndSort(legoList, selectedTheme, sortBy);
+    const result = applyFilterAndSort(legoList, selectedTheme, selectedYear, sortBy);
     setFilteredAndSortedList(result);
-  }, [legoList, selectedTheme, sortBy]);
+  }, [legoList, selectedTheme, selectedYear, sortBy]);
 
   // 분석 관련 함수들
   const getAnalysisData = () => {
@@ -1191,6 +1236,42 @@ const LegoRegister = () => {
               </select>
             </div>
 
+            {/* 년도 필터 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontWeight: 'bold', color: '#000000' }}>📅 년도:</span>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '2px solid #bdc3c7',
+                  fontSize: '1rem',
+                  backgroundColor: 'white',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  transition: 'border-color 0.3s ease'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#000000'}
+                onBlur={(e) => e.target.style.borderColor = '#bdc3c7'}
+              >
+                {getUniqueYears(legoList).map(year => (
+                  <option key={year} value={year}>
+                    {year} {year !== '전체' && `(${legoList.filter(l => {
+                      const releaseDate = l['출시일'];
+                      if (!releaseDate) return false;
+                      try {
+                        const releaseYear = new Date(releaseDate).getFullYear().toString();
+                        return releaseYear === year;
+                      } catch {
+                        return false;
+                      }
+                    }).length}개)`}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* 정렬 옵션 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontWeight: 'bold', color: '#000000' }}>📊 정렬:</span>
@@ -1211,6 +1292,8 @@ const LegoRegister = () => {
                 onBlur={(e) => e.target.style.borderColor = '#bdc3c7'}
               >
                 <option value="none">기본 순서</option>
+                <option value="release-desc">📅 출시일 최신 순</option>
+                <option value="release-asc">📅 출시일 오래된 순</option>
                 <option value="profit-desc">💰 수익률 높은 순</option>
                 <option value="profit-asc">📉 수익률 낮은 순</option>
                 <option value="price-desc">💎 현재 가격 높은 순</option>
@@ -1229,10 +1312,19 @@ const LegoRegister = () => {
               fontSize: '0.9rem',
               fontWeight: 'bold'
             }}>
-              {selectedTheme === '전체' ? 
-                `전체 ${filteredAndSortedList?.length || 0}개` : 
-                `${selectedTheme} ${filteredAndSortedList?.length || 0}개`
-              }
+              {(() => {
+                let label = '';
+                if (selectedTheme === '전체' && selectedYear === '전체') {
+                  label = '전체';
+                } else if (selectedTheme === '전체') {
+                  label = `${selectedYear}년`;
+                } else if (selectedYear === '전체') {
+                  label = selectedTheme;
+                } else {
+                  label = `${selectedYear}년 ${selectedTheme}`;
+                }
+                return `${label} ${filteredAndSortedList?.length || 0}개`;
+              })()}
             </div>
           </div>
         </div>
