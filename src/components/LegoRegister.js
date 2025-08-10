@@ -3070,35 +3070,6 @@ const LegoRegister = () => {
             </div>
           )}
           
-          {/* 출시일 */}
-          <div style={{ marginBottom: '30px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '1.3rem',
-              fontWeight: 'bold',
-              color: '#000000',
-              marginBottom: '10px'
-            }}>
-              📅 출시일
-            </label>
-            <input
-              type="date"
-              name="releaseDate"
-              value={formData.releaseDate}
-              onChange={handleInputChange}
-              required
-              style={{
-                width: '100%',
-                padding: '15px',
-                fontSize: '1.2rem',
-                border: '2px solid #000000',
-                borderRadius: '8px',
-                boxSizing: 'border-box',
-                backgroundColor: '#fff'
-              }}
-            />
-          </div>
-
           {/* 레고 번호 */}
           <div style={{ marginBottom: '30px' }}>
             <label style={{
@@ -3167,6 +3138,34 @@ const LegoRegister = () => {
             </p>
           </div>
 
+          {/* 테마 */}
+          <div style={{ marginBottom: '30px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '1.3rem',
+              fontWeight: 'bold',
+              color: '#000000',
+              marginBottom: '10px'
+            }}>
+              🎨 테마
+            </label>
+            <input
+              type="text"
+              name="theme"
+              value={formData.theme}
+              onChange={handleInputChange}
+              placeholder="예: Castle, City, Star Wars"
+              style={{
+                width: '100%',
+                padding: '15px',
+                fontSize: '1.2rem',
+                border: '2px solid #000000',
+                borderRadius: '8px',
+                boxSizing: 'border-box'
+              }}
+            />
+          </div>
+
           {/* 제품명 */}
           <div style={{ marginBottom: '30px' }}>
             <label style={{
@@ -3196,7 +3195,7 @@ const LegoRegister = () => {
             />
           </div>
 
-          {/* 테마 */}
+          {/* 출시일 */}
           <div style={{ marginBottom: '30px' }}>
             <label style={{
               display: 'block',
@@ -3205,21 +3204,22 @@ const LegoRegister = () => {
               color: '#000000',
               marginBottom: '10px'
             }}>
-              🎨 테마
+              📅 출시일
             </label>
             <input
-              type="text"
-              name="theme"
-              value={formData.theme}
+              type="date"
+              name="releaseDate"
+              value={formData.releaseDate}
               onChange={handleInputChange}
-              placeholder="예: Castle, City, Star Wars"
+              required
               style={{
                 width: '100%',
                 padding: '15px',
                 fontSize: '1.2rem',
                 border: '2px solid #000000',
                 borderRadius: '8px',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                backgroundColor: '#fff'
               }}
             />
           </div>
