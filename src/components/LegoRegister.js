@@ -30,6 +30,7 @@ const LegoRegister = () => {
   const [selectedYear, setSelectedYear] = useState('전체');
   const [sortBy, setSortBy] = useState('none');
   const [filteredAndSortedList, setFilteredAndSortedList] = useState([]);
+  const [message, setMessage] = useState('');
 
   // API에서 레고 데이터 불러오기
   const loadLegoData = async () => {
@@ -3033,6 +3034,31 @@ const LegoRegister = () => {
           borderRadius: '8px',
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
         }}>
+          {/* 메시지 표시 영역 */}
+          {message && (
+            <div style={{
+              padding: '15px',
+              marginBottom: '20px',
+              borderRadius: '8px',
+              backgroundColor: message.includes('✅') ? '#d4edda' : 
+                             message.includes('❌') ? '#f8d7da' : 
+                             message.includes('⚠️') ? '#fff3cd' : '#d1ecf1',
+              color: message.includes('✅') ? '#155724' : 
+                    message.includes('❌') ? '#721c24' : 
+                    message.includes('⚠️') ? '#856404' : '#0c5460',
+              border: `1px solid ${
+                message.includes('✅') ? '#c3e6cb' : 
+                message.includes('❌') ? '#f5c6cb' : 
+                message.includes('⚠️') ? '#ffeeba' : '#bee5eb'
+              }`,
+              fontSize: '1rem',
+              fontWeight: '500',
+              textAlign: 'center'
+            }}>
+              {message}
+            </div>
+          )}
+          
           {/* 출시일 */}
           <div style={{ marginBottom: '30px' }}>
             <label style={{
