@@ -32,6 +32,15 @@ const LegoRegister = () => {
   const [filteredAndSortedList, setFilteredAndSortedList] = useState([]);
   const [message, setMessage] = useState('');
 
+  // 일괄 수정 관련 상태
+  const [bulkEditData, setBulkEditData] = useState([]);
+  const [bulkEditFilters, setBulkEditFilters] = useState({
+    theme: '전체',
+    year: '전체', 
+    number: ''
+  });
+  const [isUpdating, setIsUpdating] = useState(false);
+
   // API에서 레고 데이터 불러오기
   const loadLegoData = async () => {
     try {
@@ -999,6 +1008,103 @@ const LegoRegister = () => {
     };
   }, []);
 
+  // 일괄 수정 관련 함수들
+  const loadBulkEditData = () => {
+    let filteredData = [...legoList];
+
+    // 테마 필터
+    if (bulkEditFilters.theme !== '전체') {
+      filteredData = filteredData.filter(item => item['테마'] === bulkEditFilters.theme);
+    }
+
+    // 년도 필터
+    if (bulkEditFilters.year !== '전체') {
+      filteredData = filteredData.filter(item => {
+        const releaseYear = item['출시일'] ? item['출시일'].substring(0, 4) : '';
+        return releaseYear === bulkEditFilters.year;
+      });
+    }
+
+    // 레고 번호 필터
+    if (bulkEditFilters.number) {
+      filteredData = filteredData.filter(item => 
+        item['레고 번호'] && item['레고 번호'].toString().includes(bulkEditFilters.number)
+      );
+    }
+
+    setBulkEditData(filteredData);
+  };
+
+  const handleBulkEditFilterChange = (filterType, value) => {
+    setBulkEditFilters(prev => ({
+      ...prev,
+      [filterType]: value
+    }));
+  };
+
+  const handleBulkEditCellChange = (index, field, value) => {
+    setBulkEditData(prev => {
+      const newData = [...prev];
+      newData[index] = {
+        ...newData[index],
+        [field]: value
+      };
+      return newData;
+    });
+  };
+
+  const handleBulkUpdate = async () => {
+    if (!bulkEditData.length) {
+      alert('수정할 데이터가 없습니다.');
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      const updatePromises = bulkEditData.map(async (item) => {
+        const updateData = {
+          '출시일': item['출시일'],
+          '레고 번호': item['레고 번호'],
+          '제품명': item['제품명'],
+          '테마': item['테마'],
+          '구입일': item['구입일'],
+          '정가 (원)': item['정가 (원)'],
+          '구입 가격 (원)': item['구입 가격 (원)'],
+          '현재 시세 (원)': item['현재 시세 (원)'],
+          '상태': item['상태'],
+          '이미지 URL': item['이미지 URL']
+        };
+
+        const response = await fetch(`http://localhost:3001/api/legos/${item.id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData)
+        });
+
+        if (!response.ok) {
+          throw new Error(`레고 ${item['레고 번호']} 업데이트 실패`);
+        }
+      });
+
+      await Promise.all(updatePromises);
+      
+      alert(`${bulkEditData.length}개 레고 정보가 성공적으로 업데이트되었습니다.`);
+      
+      // 데이터 새로고침
+      await loadLegoData();
+      loadBulkEditData();
+      
+    } catch (error) {
+      console.error('일괄 업데이트 오류:', error);
+      alert(`일괄 업데이트 중 오류가 발생했습니다: ${error.message}`);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   // 사이드바 컴포넌트
   const renderSidebar = () => (
     <div style={{
@@ -1129,6 +1235,36 @@ const LegoRegister = () => {
           레고 일괄 등록
         </button>
 
+        <button
+          onClick={() => setCurrentPage('bulkEdit')}
+          style={{
+            width: '100%',
+            padding: '15px 20px',
+            backgroundColor: currentPage === 'bulkEdit' ? '#000000' : 'transparent',
+            color: 'white',
+            border: 'none',
+            textAlign: 'left',
+            fontSize: '1rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            transition: 'background-color 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            if (currentPage !== 'bulkEdit') {
+              e.target.style.backgroundColor = '#333333';
+            }
+          }}
+          onMouseOut={(e) => {
+            if (currentPage !== 'bulkEdit') {
+              e.target.style.backgroundColor = 'transparent';
+            }
+          }}
+        >
+          <span style={{ fontSize: '1.2rem' }}>✏️</span>
+          레고 일괄 수정
+        </button>
 
         <button
           onClick={() => setCurrentPage('analysis')}
@@ -2998,6 +3134,335 @@ const LegoRegister = () => {
     );
   };
 
+  // 일괄 수정 페이지 렌더링
+  const renderBulkEdit = () => {
+    const getUniqueThemes = () => {
+      const themes = legoList.map(item => item['테마']).filter(theme => theme);
+      return ['전체', ...new Set(themes)];
+    };
+
+    const getUniqueYears = () => {
+      const years = legoList.map(item => {
+        const releaseDate = item['출시일'];
+        return releaseDate ? releaseDate.substring(0, 4) : '';
+      }).filter(year => year);
+      return ['전체', ...new Set(years)].sort((a, b) => {
+        if (a === '전체') return -1;
+        if (b === '전체') return 1;
+        return b.localeCompare(a);
+      });
+    };
+
+    return (
+      <div style={{ padding: '20px', backgroundColor: '#f8f8f8', minHeight: '100vh' }}>
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          padding: '20px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          marginBottom: '20px'
+        }}>
+          <h2 style={{ color: '#000000', fontSize: '1.5rem', marginBottom: '20px' }}>
+            ✏️ 레고 일괄 수정
+          </h2>
+
+          {/* 필터 섹션 */}
+          <div style={{
+            display: 'flex',
+            gap: '15px',
+            alignItems: 'center',
+            marginBottom: '20px',
+            flexWrap: 'wrap'
+          }}>
+            <div>
+              <label style={{ fontSize: '0.9rem', fontWeight: 'bold', marginRight: '8px' }}>테마:</label>
+              <select
+                value={bulkEditFilters.theme}
+                onChange={(e) => handleBulkEditFilterChange('theme', e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  fontSize: '0.9rem',
+                  border: '1px solid #bdc3c7',
+                  borderRadius: '4px',
+                  backgroundColor: 'white'
+                }}
+              >
+                {getUniqueThemes().map(theme => (
+                  <option key={theme} value={theme}>{theme}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontSize: '0.9rem', fontWeight: 'bold', marginRight: '8px' }}>년도:</label>
+              <select
+                value={bulkEditFilters.year}
+                onChange={(e) => handleBulkEditFilterChange('year', e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  fontSize: '0.9rem',
+                  border: '1px solid #bdc3c7',
+                  borderRadius: '4px',
+                  backgroundColor: 'white'
+                }}
+              >
+                {getUniqueYears().map(year => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontSize: '0.9rem', fontWeight: 'bold', marginRight: '8px' }}>레고 번호:</label>
+              <input
+                type="text"
+                value={bulkEditFilters.number}
+                onChange={(e) => handleBulkEditFilterChange('number', e.target.value)}
+                placeholder="번호로 검색..."
+                style={{
+                  padding: '8px 12px',
+                  fontSize: '0.9rem',
+                  border: '1px solid #bdc3c7',
+                  borderRadius: '4px',
+                  width: '150px'
+                }}
+              />
+            </div>
+
+            <button
+              onClick={loadBulkEditData}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#000000',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              🔍 조회
+            </button>
+          </div>
+
+          {/* 데이터 테이블 */}
+          {bulkEditData.length > 0 && (
+            <div style={{
+              overflowX: 'auto',
+              marginBottom: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px'
+            }}>
+              <table style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                backgroundColor: 'white'
+              }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#000000', color: 'white' }}>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>출시일</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>레고 번호</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '200px' }}>제품명</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '120px' }}>테마</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>구입일</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>정가</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>구입가</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>현재시세</th>
+                    <th style={{ padding: '12px 8px', fontSize: '0.9rem', minWidth: '100px' }}>상태</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bulkEditData.map((item, index) => (
+                    <tr key={item.id || index} style={{
+                      backgroundColor: index % 2 === 0 ? '#f8f8f8' : 'white',
+                      borderBottom: '1px solid #eee'
+                    }}>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="date"
+                          value={item['출시일'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '출시일', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="text"
+                          value={item['레고 번호'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '레고 번호', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="text"
+                          value={item['제품명'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '제품명', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="text"
+                          value={item['테마'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '테마', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="date"
+                          value={item['구입일'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '구입일', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="number"
+                          value={item['정가 (원)'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '정가 (원)', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="number"
+                          value={item['구입 가격 (원)'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '구입 가격 (원)', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <input
+                          type="number"
+                          value={item['현재 시세 (원)'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '현재 시세 (원)', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '8px' }}>
+                        <select
+                          value={item['상태'] || ''}
+                          onChange={(e) => handleBulkEditCellChange(index, '상태', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '4px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem'
+                          }}
+                        >
+                          <option value="">선택</option>
+                          <option value="미개봉">미개봉</option>
+                          <option value="조립 완료">조립 완료</option>
+                          <option value="전시 중">전시 중</option>
+                          <option value="판매 완료">판매 완료</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* 버튼 섹션 */}
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <div style={{ marginBottom: '10px', color: '#666', fontSize: '0.9rem' }}>
+              조회된 데이터: {bulkEditData.length}개
+            </div>
+            
+            {bulkEditData.length > 0 && (
+              <button
+                onClick={handleBulkUpdate}
+                disabled={isUpdating}
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: isUpdating ? '#ccc' : '#000000',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '1rem',
+                  cursor: isUpdating ? 'not-allowed' : 'pointer',
+                  fontWeight: 'bold',
+                  marginRight: '10px'
+                }}
+              >
+                {isUpdating ? '⏳ 업데이트 중...' : '💾 일괄 저장'}
+              </button>
+            )}
+            
+            <button
+              onClick={() => setCurrentPage('list')}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#666666',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              📋 목록으로
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // 페이지 변경 시 데이터 새로고침
   useEffect(() => {
     if (currentPage === 'list') {
@@ -3017,6 +3482,9 @@ const LegoRegister = () => {
       return renderBulkRegister();
     }
 
+    if (currentPage === 'bulkEdit') {
+      return renderBulkEdit();
+    }
 
     if (currentPage === 'analysis') {
       return renderAnalysisDashboard();
