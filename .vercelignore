@@ -1,0 +1,4 @@
+# Remove any cached files
+.vercel
+build
+node_modules
