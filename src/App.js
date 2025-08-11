@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthProvider, AuthContext } from './context/AuthContext';
+import { AuthProvider, AuthContext } from './context/AuthContext.new';
 import PrivateRoute from './components/PrivateRoute';
 import LegoRegister from './components/LegoRegister';
 import './App.css';

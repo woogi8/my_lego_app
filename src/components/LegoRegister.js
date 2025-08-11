@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.new';
 // import legoService from '../services/supabaseService'; // Vercel Functions 사용으로 대체
 
 const LegoRegister = () => {

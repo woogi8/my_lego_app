@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext.new';
 import './Login.css';
 
 const Login = () => {
@@ -120,7 +120,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.0.4 (캐시 버스터)
+              버전 v2.0.5 (동적 URL)
             </div>
           </div>
         </div>

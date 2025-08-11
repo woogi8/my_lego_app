@@ -13,9 +13,13 @@ export const AuthProvider = ({ children }) => {
       try {
         console.log('🔍 서버리스 인증 상태 확인 중...');
         
-        // 서버리스 상태 확인
+        // 서버리스 상태 확인 - v2.0.5
         try {
-          const statusResponse = await fetch('/api/status');
+          const baseUrl = window.location.origin;
+          const statusUrl = `${baseUrl}/api/status`;
+          console.log('🔍 상태 확인 URL:', statusUrl);
+          
+          const statusResponse = await fetch(statusUrl);
           if (statusResponse.ok) {
             console.log('✅ 서버리스 함수 연결 성공');
           }
@@ -44,16 +48,23 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  // 서버리스 로그인 (Vercel Functions) - v2.0.4
+  // 서버리스 로그인 (Vercel Functions) - v2.0.5 CACHE BUSTER
   const login = async (username, password) => {
     try {
-      console.log('🔐 서버리스 로그인 시도 v2.0.4:', username);
+      console.log('🔐 서버리스 로그인 시도 v2.0.5 FORCE UPDATE:', username);
       
-      const response = await fetch('/api/auth/login', {
+      // 동적 베이스 URL 생성 - 캐시 문제 해결
+      const baseUrl = window.location.origin;
+      const apiUrl = `${baseUrl}/api/auth/login`;
+      
+      console.log('🌐 API URL:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
         },
         body: JSON.stringify({ username, password }),
       });
