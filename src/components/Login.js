@@ -33,7 +33,7 @@ const Login = () => {
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError('로그인 중 오류가 발생했습니다.');
+      setError('로그인 실패: 서버 연결을 확인하거나 아이디/비밀번호를 다시 확인해주세요.');
     } finally {
       setLoading(false);
     }

@@ -2,20 +2,6 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 export const AuthContext = createContext();
 
-// 하드코딩된 사용자 정보 (완전히 클라이언트에서만 작동)
-const USERS = {
-  'woogi': {
-    password: 'woogi01!',
-    name: '우기',
-    role: 'admin'
-  },
-  'lei': {
-    password: 'lei01!',
-    name: '레이', 
-    role: 'admin'
-  }
-};
-
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
