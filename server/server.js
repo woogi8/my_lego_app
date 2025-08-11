@@ -3,6 +3,7 @@ const cors = require('cors');
 const XLSX = require('xlsx');
 const fs = require('fs-extra');
 const path = require('path');
+const { supabase, TABLES } = require('./config/supabase');
 
 const app = express();
 const PORT = 3001;
@@ -14,15 +15,7 @@ const EXCEL_FILE_PATH = path.join(__dirname, '..', 'my_lego_list.xlsx');
 app.use(cors());
 app.use(express.json());
 
-// 고정 사용자 정보 (실제 운영환경에서는 데이터베이스 사용)
-const USERS = {
-  woogi: {
-    username: 'woogi',
-    password: 'woogi01!',
-    name: '우기',
-    role: 'admin'
-  }
-};
+// DB에서 사용자 정보를 조회하므로 하드코딩된 사용자 정보 제거
 
 // 초기 엑셀 파일 생성 함수
 const createInitialExcelFile = async () => {
@@ -199,24 +192,49 @@ const writeExcelData = async (data) => {
 
 // API 엔드포인트들
 
-// 0. 로그인 인증
-app.post('/api/auth/login', (req, res) => {
+// 0. 로그인 인증 (DB 조회 방식)
+app.post('/api/auth/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
     console.log('🔐 로그인 시도:', username);
     
-    // 사용자 검증
-    const user = USERS[username];
-    if (!user || user.password !== password) {
-      console.log('❌ 로그인 실패: 잘못된 인증 정보');
+    // lego_user 테이블에서 사용자 조회
+    const { data: users, error } = await supabase
+      .from(TABLES.USERS)
+      .select('user_id, user_pw, user_name, user_role')
+      .eq('user_id', username)
+      .limit(1);
+
+    if (error) {
+      console.error('❌ 데이터베이스 조회 오류:', error);
+      return res.status(500).json({
+        success: false,
+        message: '서버 오류가 발생했습니다.'
+      });
+    }
+
+    // 사용자가 존재하지 않는 경우
+    if (!users || users.length === 0) {
+      console.log('❌ 로그인 실패: 존재하지 않는 사용자');
       return res.status(401).json({
         success: false,
         message: '아이디 또는 비밀번호가 올바르지 않습니다.'
       });
     }
-    
-    // 간단한 토큰 생성 (실제 운영환경에서는 JWT 사용)
+
+    const user = users[0];
+
+    // 비밀번호 확인
+    if (user.user_pw !== password) {
+      console.log('❌ 로그인 실패: 잘못된 비밀번호');
+      return res.status(401).json({
+        success: false,
+        message: '아이디 또는 비밀번호가 올바르지 않습니다.'
+      });
+    }
+
+    // 로그인 성공
     const token = `token_${username}_${Date.now()}`;
     
     console.log('✅ 로그인 성공:', username);
@@ -225,11 +243,12 @@ app.post('/api/auth/login', (req, res) => {
       success: true,
       token,
       user: {
-        username: user.username,
-        name: user.name,
-        role: user.role
+        username: user.user_id,
+        name: user.user_name || user.user_id,
+        role: user.user_role || 'user'
       }
     });
+
   } catch (error) {
     console.error('로그인 API 오류:', error);
     res.status(500).json({
@@ -239,8 +258,8 @@ app.post('/api/auth/login', (req, res) => {
   }
 });
 
-// 인증 미들웨어
-const authenticateToken = (req, res, next) => {
+// 인증 미들웨어 (DB 조회 방식)
+const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   
@@ -251,16 +270,72 @@ const authenticateToken = (req, res, next) => {
     });
   }
   
-  // 간단한 토큰 검증 (실제 운영환경에서는 JWT 검증)
-  if (!token.startsWith('token_woogi_')) {
+  try {
+    // 토큰에서 사용자 정보 추출
+    const tokenParts = token.split('_');
+    if (tokenParts.length !== 3 || tokenParts[0] !== 'token') {
+      return res.status(403).json({
+        success: false,
+        message: '유효하지 않은 토큰 형식입니다.'
+      });
+    }
+    
+    const username = tokenParts[1];
+    const timestamp = tokenParts[2];
+    
+    // lego_user 테이블에서 사용자 존재 여부 확인
+    const { data: users, error } = await supabase
+      .from(TABLES.USERS)
+      .select('user_id, user_name, user_role')
+      .eq('user_id', username)
+      .limit(1);
+
+    if (error) {
+      console.error('❌ 사용자 조회 오류:', error);
+      return res.status(500).json({
+        success: false,
+        message: '인증 검증 중 오류가 발생했습니다.'
+      });
+    }
+
+    if (!users || users.length === 0) {
+      return res.status(403).json({
+        success: false,
+        message: '존재하지 않는 사용자입니다.'
+      });
+    }
+
+    const user = users[0];
+    
+    // 토큰 만료 검증 (24시간)
+    const tokenTime = parseInt(timestamp);
+    const currentTime = Date.now();
+    const tokenAge = currentTime - tokenTime;
+    const maxAge = 24 * 60 * 60 * 1000; // 24시간
+    
+    if (tokenAge > maxAge) {
+      return res.status(403).json({
+        success: false,
+        message: '토큰이 만료되었습니다.'
+      });
+    }
+    
+    // 사용자 정보를 request에 추가
+    req.user = {
+      username: user.user_id,
+      name: user.user_name || user.user_id,
+      role: user.user_role || 'user'
+    };
+    
+    next();
+    
+  } catch (error) {
+    console.error('토큰 검증 오류:', error);
     return res.status(403).json({
       success: false,
-      message: '유효하지 않은 토큰입니다.'
+      message: '토큰 검증 중 오류가 발생했습니다.'
     });
   }
-  
-  req.user = USERS.woogi;
-  next();
 };
 
 // 1. 모든 레고 데이터 조회
