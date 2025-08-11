@@ -118,7 +118,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.0.1
+              버전 v2.0.2 (서버리스)
             </div>
           </div>
         </div>
