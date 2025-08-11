@@ -44,15 +44,16 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  // 서버리스 로그인 (Vercel Functions)
+  // 서버리스 로그인 (Vercel Functions) - v2.0.4
   const login = async (username, password) => {
     try {
-      console.log('🔐 서버리스 로그인 시도:', username);
+      console.log('🔐 서버리스 로그인 시도 v2.0.4:', username);
       
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
         },
         body: JSON.stringify({ username, password }),
       });

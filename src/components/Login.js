@@ -120,7 +120,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.0.3 (완전 서버리스)
+              버전 v2.0.4 (캐시 버스터)
             </div>
           </div>
         </div>

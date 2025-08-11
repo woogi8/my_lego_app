@@ -21,7 +21,8 @@
       "Bash(set PORT=3000)",
       "Bash($env:PORT=3000)",
       "Bash(rm:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(vercel:*)"
     ],
     "deny": []
   }
