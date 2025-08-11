@@ -21,7 +21,7 @@ export default function handler(req, res) {
   try {
     const { username, password } = req.body;
     
-    console.log('🔐 Vercel Function 로그인 시도:', username);
+    console.log('🔐 Vercel Function 로그인 시도 v2.1.1:', username, new Date().toISOString());
 
     // 하드코딩된 사용자 정보
     const USERS = {

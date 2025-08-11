@@ -19,7 +19,7 @@ export default function handler(req, res) {
   }
 
   try {
-    console.log('📊 서버리스 상태 확인 요청');
+    console.log('📊 서버리스 상태 확인 요청 v2.1.1:', new Date().toISOString());
 
     return res.status(200).json({
       success: true,
