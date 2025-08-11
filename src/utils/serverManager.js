@@ -1,8 +1,10 @@
 // 서버리스 구조 - 서버 상태 확인 불필요
 // Vercel Functions로 완전히 대체됨
+// Cache Buster: v2.0.1-${Date.now()}
 
 export const checkServerStatus = async () => {
   // 서버리스 환경에서는 항상 false 반환 (로컬 폴백 사용)
+  console.log('🎉 서버리스 환경 - localhost 서버 확인 생략');
   return false;
 };
 
