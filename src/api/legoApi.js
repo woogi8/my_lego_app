@@ -1,4 +1,12 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+// 동적 API URL 생성 - 배포 환경에서는 같은 도메인 사용
+const getApiBaseUrl = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return '/api'; // 프로덕션에서는 상대 경로 사용
+  }
+  return process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 class LegoAPI {
   async handleResponse(response) {

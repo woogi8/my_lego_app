@@ -120,7 +120,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.0.5 (동적 URL)
+              버전 v2.1.0 (진짜 수정됨!)
             </div>
           </div>
         </div>

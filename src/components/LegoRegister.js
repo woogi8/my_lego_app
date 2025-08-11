@@ -1425,7 +1425,7 @@ const LegoRegister = () => {
           onClick={async () => {
             try {
               console.log('🔧 디버깅: 엑셀 파일 원시 데이터 확인');
-              const response = await fetch('http://localhost:3000/api/debug/excel');
+              const response = await fetch('/api/debug/excel');
               const result = await response.json();
               
               console.log('🔍 디버깅 결과:', result);
