@@ -120,7 +120,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.1.2 (pages/api 구조)
+              버전 v2.1.3 (API 라우팅 수정)
             </div>
           </div>
         </div>
