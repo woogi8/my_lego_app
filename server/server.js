@@ -6,7 +6,7 @@ const path = require('path');
 const { supabase, TABLES } = require('./config/supabase');
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 // 엑셀 파일 경로
 const EXCEL_FILE_PATH = path.join(__dirname, '..', 'my_lego_list.xlsx');
@@ -198,6 +198,13 @@ app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
     
     console.log('🔐 로그인 시도:', username);
+    console.log('📝 받은 요청 데이터:', JSON.stringify(req.body, null, 2));
+    console.log('📝 비밀번호 상세:', {
+      value: password,
+      length: password ? password.length : 0,
+      type: typeof password,
+      charCodes: password ? password.split('').map(c => c.charCodeAt(0)) : []
+    });
     
     // lego_user 테이블에서 사용자 조회
     const { data: users, error } = await supabase
@@ -224,6 +231,19 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const user = users[0];
+    
+    console.log('🔍 DB에서 조회된 사용자 정보:');
+    console.log('📝 DB 비밀번호 상세:', {
+      value: user.user_pw,
+      length: user.user_pw ? user.user_pw.length : 0,
+      type: typeof user.user_pw,
+      charCodes: user.user_pw ? user.user_pw.split('').map(c => c.charCodeAt(0)) : []
+    });
+    
+    console.log('⚖️ 비밀번호 비교:');
+    console.log('  입력:', JSON.stringify(password));
+    console.log('  DB  :', JSON.stringify(user.user_pw));
+    console.log('  동일:', password === user.user_pw);
 
     // 비밀번호 확인
     if (user.user_pw !== password) {
