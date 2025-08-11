@@ -44,11 +44,13 @@ export const AuthProvider = ({ children }) => {
       });
 
       console.log('📡 응답 상태:', response.status, response.statusText);
+      console.log('📡 response.ok:', response.ok);
       
       const data = await response.json();
       console.log('📋 응답 데이터:', data);
+      console.log('📋 data.success:', data.success);
 
-      if (response.ok) {
+      if (response.ok && data.success) {
         // 인증 성공
         const { token, user: userData } = data;
         
