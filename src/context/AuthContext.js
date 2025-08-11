@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('🔐 로그인 시도:', { username, password });
       
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

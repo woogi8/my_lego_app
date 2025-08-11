@@ -45,7 +45,7 @@ const LegoRegister = () => {
   // API에서 레고 데이터 불러오기
   const loadLegoData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/legos', {
+      const response = await fetch('http://localhost:3000/api/legos', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ const LegoRegister = () => {
   // 파일 상태 확인 함수
   const loadFileStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/status');
+      const response = await fetch('http://localhost:3000/api/status');
       const result = await response.json();
       
       if (result.success) {
@@ -549,7 +549,7 @@ const LegoRegister = () => {
         '이미지 URL': data.imageUrl
       };
 
-      const response = await fetch('http://localhost:3001/api/legos', {
+      const response = await fetch('http://localhost:3000/api/legos', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -702,7 +702,7 @@ const LegoRegister = () => {
         '이미지 URL': data.imageUrl
       }));
 
-      const response = await fetch('http://localhost:3001/api/legos/bulk', {
+      const response = await fetch('http://localhost:3000/api/legos/bulk', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -880,7 +880,7 @@ const LegoRegister = () => {
         '등록 시간': legoList[editingIndex]['등록 시간'] // 기존 등록 시간 유지
       };
 
-      const response = await fetch(`http://localhost:3001/api/legos/${editingLegoId}`, {
+      const response = await fetch(`http://localhost:3000/api/legos/${editingLegoId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -918,7 +918,7 @@ const LegoRegister = () => {
   const deleteLego = async (legoId) => {
     if (window.confirm('정말로 이 레고를 삭제하시겠습니까?')) {
       try {
-        const response = await fetch(`http://localhost:3001/api/legos/${legoId}`, {
+        const response = await fetch(`http://localhost:3000/api/legos/${legoId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1084,7 +1084,7 @@ const LegoRegister = () => {
           '이미지 URL': item['이미지 URL']
         };
 
-        const response = await fetch(`http://localhost:3001/api/legos/${item.id}`, {
+        const response = await fetch(`http://localhost:3000/api/legos/${item.id}`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1364,7 +1364,7 @@ const LegoRegister = () => {
           onClick={async () => {
             try {
               console.log('🔧 디버깅: 엑셀 파일 원시 데이터 확인');
-              const response = await fetch('http://localhost:3001/api/debug/excel');
+              const response = await fetch('http://localhost:3000/api/debug/excel');
               const result = await response.json();
               
               console.log('🔍 디버깅 결과:', result);
