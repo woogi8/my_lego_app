@@ -1,43 +1,25 @@
-// 서버 상태 확인 및 관리 유틸리티
+// 서버리스 구조 - 서버 상태 확인 불필요
+// Vercel Functions로 완전히 대체됨
 
 export const checkServerStatus = async () => {
-  try {
-    const response = await fetch('http://localhost:3000/api/status', {
-      method: 'GET',
-      timeout: 5000
-    });
-    return response.ok;
-  } catch (error) {
-    return false;
-  }
+  // 서버리스 환경에서는 항상 false 반환 (로컬 폴백 사용)
+  return false;
 };
 
 export const startServerInstructions = () => {
-  const instructions = `
-🚨 서버가 실행되지 않았습니다!
+  return `
+🎉 완전한 서버리스 구조입니다!
 
-로그인하려면 서버가 필요합니다. 아래 방법 중 하나를 선택하세요:
+이 앱은 Vercel Functions를 사용하여 서버 없이 작동합니다:
+✅ 로그인: Vercel Functions 또는 로컬 폴백
+✅ 데이터베이스: Supabase 직접 연결
+✅ 배포: Vercel 서버리스
 
-✅ 가장 쉬운 방법:
-   → start-full-app.bat 파일을 더블클릭
-
-✅ 명령어로 실행:
-   → 터미널에서 "npm run dev"
-   
-✅ 서버만 별도 실행:
-   → 터미널에서 "cd server && node server.js"
-
-서버가 실행되면 자동으로 로그인됩니다.
+로컬 서버가 필요하지 않습니다.
 `;
-  
-  return instructions;
 };
 
 export const showServerErrorDialog = () => {
-  const message = startServerInstructions();
-  
-  if (window.confirm(message + '\n\n"확인"을 누르면 서버 실행 방법 페이지를 엽니다.')) {
-    // GitHub README 페이지 열기
-    window.open('https://github.com/woogi8/my_lego_app#-실행-방법', '_blank');
-  }
+  // 서버리스 환경에서는 오류 다이얼로그 불필요
+  console.log('🎉 서버리스 환경 - 서버 오류 다이얼로그 생략');
 };
