@@ -25,14 +25,16 @@ const Login = () => {
     setLoading(true);
 
     try {
-      console.log('Login form submitted:', formData.username);
-      const success = await login(formData.username, formData.password);
+      console.log('🔐 서버리스 로그인 폼 제출:', formData.username);
+      const result = await login(formData.username, formData.password);
       
-      if (!success) {
-        setError('아이디 또는 비밀번호가 올바르지 않습니다. 계정: woogi/woogi01! 또는 lei/lei01!');
+      if (!result.success) {
+        setError(result.message || '아이디 또는 비밀번호가 올바르지 않습니다. 계정: woogi/woogi01! 또는 lei/lei01!');
+      } else {
+        console.log('✅ 로그인 성공');
       }
     } catch (err) {
-      console.error('Login error:', err);
+      console.error('로그인 오류:', err);
       setError('로그인 실패: 서버 연결을 확인하거나 아이디/비밀번호를 다시 확인해주세요.');
     } finally {
       setLoading(false);
@@ -118,7 +120,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.0.2 (서버리스)
+              버전 v2.0.3 (완전 서버리스)
             </div>
           </div>
         </div>
