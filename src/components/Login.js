@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
-import packageJson from '../../package.json';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -111,11 +110,15 @@ const Login = () => {
             <div style={{
               marginTop: '20px',
               textAlign: 'center',
-              fontSize: '0.8rem',
-              color: '#666',
-              opacity: 0.8
+              fontSize: '0.9rem',
+              color: '#333',
+              fontWeight: 'bold',
+              padding: '5px',
+              backgroundColor: '#f0f0f0',
+              borderRadius: '4px',
+              border: '1px solid #ddd'
             }}>
-              v{packageJson.version}
+              버전 v2.0.1
             </div>
           </div>
         </div>
