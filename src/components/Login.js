@@ -25,9 +25,11 @@ const Login = () => {
     setLoading(true);
 
     try {
+      console.log('Login form submitted:', formData.username);
       const success = await login(formData.username, formData.password);
+      
       if (!success) {
-        setError('아이디 또는 비밀번호가 올바르지 않습니다. (woogi/woogi01! 또는 lei/lei01!)');
+        setError('아이디 또는 비밀번호가 올바르지 않습니다. 계정: woogi/woogi01! 또는 lei/lei01!');
       }
     } catch (err) {
       console.error('Login error:', err);
@@ -60,7 +62,7 @@ const Login = () => {
                   value={formData.username}
                   onChange={handleChange}
                   className="form-input"
-                  placeholder="Enter your username"
+                  placeholder="woogi 또는 lei"
                   required
                   disabled={loading}
                 />
@@ -75,10 +77,16 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className="form-input"
-                  placeholder="Enter your password"
+                  placeholder="비밀번호를 입력하세요"
                   required
                   disabled={loading}
                 />
+              </div>
+
+              <div style={{ marginTop: '10px', fontSize: '14px', color: '#666', textAlign: 'center' }}>
+                <div>테스트 계정:</div>
+                <div><strong>woogi</strong> / <strong>woogi01!</strong></div>
+                <div><strong>lei</strong> / <strong>lei01!</strong></div>
               </div>
 
               {error && (
