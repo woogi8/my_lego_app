@@ -1,3 +1,5 @@
-# API routes should not be handled by React Router
+# API routes should be handled by serverless functions
 /api/* /api/:splat 200!
+
+# All other routes should be handled by React Router
 /* /index.html 200
