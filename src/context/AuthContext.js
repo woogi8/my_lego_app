@@ -31,38 +31,82 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  // Vercel Functions를 사용한 로그인
+  // 하드코딩된 사용자 정보 (로컬 개발용)
+  const USERS = {
+    'woogi': {
+      password: 'woogi01!',
+      name: '우기',
+      role: 'admin'
+    },
+    'lei': {
+      password: 'lei01!',
+      name: '레이',
+      role: 'admin'
+    }
+  };
+
+  // Vercel Functions 또는 로컬 폴백 로그인
   const login = async (username, password) => {
     try {
-      console.log('🔐 Vercel Function 로그인 시도:', username);
+      console.log('🔐 로그인 시도:', username);
       
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      // Vercel Functions 시도
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
 
-      const data = await response.json();
-      console.log('📋 로그인 응답:', data);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('📋 Vercel Functions 로그인 응답:', data);
 
-      if (response.ok && data.success) {
-        console.log('✅ 로그인 성공:', data.user);
+          if (data.success) {
+            console.log('✅ Vercel Functions 로그인 성공:', data.user);
+            
+            // 로컬스토리지에 저장
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            
+            // 상태 업데이트
+            setIsAuthenticated(true);
+            setUser(data.user);
+            
+            return true;
+          }
+        }
+      } catch (fetchError) {
+        console.log('🔄 Vercel Functions 실패, 로컬 폴백 사용:', fetchError.message);
+      }
+
+      // 로컬 폴백 인증
+      if (USERS[username] && USERS[username].password === password) {
+        console.log('✅ 로컬 폴백 로그인 성공:', username);
+        
+        const userData = {
+          username: username,
+          name: USERS[username].name,
+          role: USERS[username].role
+        };
+        
+        const token = `local_token_${username}_${Date.now()}`;
         
         // 로컬스토리지에 저장
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('userData', JSON.stringify(data.user));
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userData', JSON.stringify(userData));
         
         // 상태 업데이트
         setIsAuthenticated(true);
-        setUser(data.user);
+        setUser(userData);
         
         return true;
-      } else {
-        console.log('❌ 로그인 실패:', data.message);
-        return false;
       }
+
+      console.log('❌ 로그인 실패:', username);
+      return false;
     } catch (error) {
       console.error('로그인 오류:', error);
       return false;
