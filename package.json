@@ -1,6 +1,6 @@
 {
   "name": "lego-management",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.54.0",

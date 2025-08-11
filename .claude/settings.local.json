@@ -27,7 +27,8 @@
       "Bash(npm run build:*)",
       "WebFetch(domain:my-lego-app-five.vercel.app)",
       "Bash(mkdir:*)",
-      "Bash(copy:*)"
+      "Bash(copy:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }
