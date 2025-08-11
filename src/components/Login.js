@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
+import packageJson from '../../package.json';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -105,6 +106,17 @@ const Login = () => {
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
             </form>
+
+            {/* 버전 정보 */}
+            <div style={{
+              marginTop: '20px',
+              textAlign: 'center',
+              fontSize: '0.8rem',
+              color: '#666',
+              opacity: 0.8
+            }}>
+              v{packageJson.version}
+            </div>
           </div>
         </div>
       </div>
