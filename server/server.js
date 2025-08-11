@@ -358,62 +358,113 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-// 1. 모든 레고 데이터 조회
+// 1. 모든 레고 데이터 조회 (Supabase DB에서)
 app.get('/api/legos', async (req, res) => {
   try {
     console.log('🔍 API 호출: GET /api/legos');
-    const data = await readExcelData();
-    console.log(`✅ API 응답: ${data.length}개 데이터 반환`);
-    res.json({ success: true, data });
+    
+    // Supabase에서 데이터 조회
+    const { data: legos, error, count } = await supabase
+      .from('my_lego_list')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('❌ DB 조회 오류:', error);
+      return res.status(500).json({ success: false, error: error.message });
+    }
+
+    // DB 컬럼명을 한국어로 변환
+    const transformedData = legos.map(lego => ({
+      '출시일': lego.release_date,
+      '레고 번호': lego.lego_number,
+      '제품명': lego.product_name,
+      '테마': lego.theme,
+      '구입일': lego.purchase_date,
+      '정가 (원)': lego.retail_price,
+      '구입 가격 (원)': lego.purchase_price,
+      '현재 시세 (원)': lego.current_market_price,
+      '상태': lego.condition,
+      '이미지 URL': lego.image_url || (lego.lego_number ? `https://images.brickset.com/sets/images/${lego.lego_number}-1.jpg` : ''),
+      '등록 시간': lego.created_at,
+      '수정 시간': lego.updated_at,
+      'id': lego.id // DB ID 보존
+    }));
+
+    console.log(`✅ DB에서 ${transformedData.length}개 데이터 반환`);
+    res.json({ success: true, data: transformedData });
   } catch (error) {
     console.error('❌ 데이터 조회 오류:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// 2. 새 레고 추가
+// 2. 새 레고 추가 (Supabase DB에)
 app.post('/api/legos', async (req, res) => {
   try {
     const newLego = req.body;
+    console.log('📝 새 레고 추가 요청:', newLego);
     
-    // 기존 데이터 읽기
-    const existingData = await readExcelData();
-    
-    // 새 데이터 추가
-    const legoWithTimestamp = {
-      ...newLego,
-      '등록 시간': new Date().toLocaleString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      })
+    // 한국어 컬럼명을 DB 컬럼명으로 변환
+    const dbLego = {
+      release_date: newLego['출시일'],
+      lego_number: newLego['레고 번호'],
+      product_name: newLego['제품명'],
+      theme: newLego['테마'],
+      purchase_date: newLego['구입일'],
+      retail_price: newLego['정가 (원)'],
+      purchase_price: newLego['구입 가격 (원)'],
+      current_market_price: newLego['현재 시세 (원)'],
+      condition: newLego['상태'],
+      image_url: newLego['이미지 URL'] || (newLego['레고 번호'] ? `https://images.brickset.com/sets/images/${newLego['레고 번호']}-1.jpg` : ''),
+      user_id: 'woogi' // 현재 사용자 (하드코딩)
     };
 
-    // 이미지 URL이 없거나 비어있으면 자동 생성
-    if (legoWithTimestamp['레고 번호'] && (!legoWithTimestamp['이미지 URL'] || legoWithTimestamp['이미지 URL'] === '')) {
-      const legoNumber = legoWithTimestamp['레고 번호'].toString().trim();
-      if (legoNumber && !legoNumber.startsWith('ISBN') && legoNumber.match(/^\d+/)) {
-        legoWithTimestamp['이미지 URL'] = `https://images.brickset.com/sets/images/${legoNumber}-1.jpg`;
-      }
+    // DB에 저장
+    const { data, error } = await supabase
+      .from('my_lego_list')
+      .insert([dbLego])
+      .select();
+
+    if (error) {
+      console.error('❌ DB 저장 오류:', error);
+      return res.status(500).json({ success: false, error: error.message });
     }
     
-    existingData.push(legoWithTimestamp);
+    console.log('✅ 레고 추가 성공:', data);
     
-    // 파일에 저장
-    const success = await writeExcelData(existingData);
-    
-    if (success) {
-      res.json({ 
-        success: true, 
-        message: '레고가 성공적으로 추가되었습니다.',
-        data: existingData 
-      });
-    } else {
-      res.status(500).json({ success: false, error: '파일 저장 실패' });
+    // 전체 데이터 다시 조회
+    const { data: allLegos, error: fetchError } = await supabase
+      .from('my_lego_list')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (fetchError) {
+      console.error('❌ 데이터 재조회 오류:', fetchError);
     }
+
+    // 변환하여 반환
+    const transformedData = allLegos.map(lego => ({
+      '출시일': lego.release_date,
+      '레고 번호': lego.lego_number,
+      '제품명': lego.product_name,
+      '테마': lego.theme,
+      '구입일': lego.purchase_date,
+      '정가 (원)': lego.retail_price,
+      '구입 가격 (원)': lego.purchase_price,
+      '현재 시세 (원)': lego.current_market_price,
+      '상태': lego.condition,
+      '이미지 URL': lego.image_url,
+      '등록 시간': lego.created_at,
+      '수정 시간': lego.updated_at,
+      'id': lego.id
+    }));
+    
+    res.json({ 
+      success: true, 
+      message: '레고가 성공적으로 추가되었습니다.',
+      data: transformedData 
+    });
   } catch (error) {
     console.error('레고 추가 오류:', error);
     res.status(500).json({ success: false, error: error.message });
