@@ -1384,7 +1384,7 @@ const LegoRegister = () => {
           boxShadow: '0 2px 6px rgba(52, 152, 219, 0.3)',
           flex: 1
         }}>
-          📋 레고 목록 ({(legoList || []).length}개)
+          📋 레고 목록 ({filteredAndSortedList?.length || legoList?.length || 0}개)
         </h1>
         
         <button
