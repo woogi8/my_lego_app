@@ -22,7 +22,8 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 // 테이블 이름 상수
 const TABLES = {
-  LEGO_ITEMS: 'my_lego_list'  // 실제 테이블 이름
+  LEGO_ITEMS: 'my_lego_list',  // 실제 테이블 이름
+  USERS: 'lego_user'  // 사용자 테이블 이름
 };
 
 // 데이터베이스 스키마 매핑

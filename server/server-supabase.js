@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const supabaseService = require('./services/supabaseService');
-const { supabase } = require('./config/supabase');
+const { supabase, TABLES } = require('./config/supabase');
 require('dotenv').config();
 
 const app = express();
@@ -11,18 +11,8 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// 고정 사용자 정보 (실제 운영환경에서는 데이터베이스 사용)
-const USERS = {
-  woogi: {
-    username: 'woogi',
-    password: 'woogi01!',
-    name: '우기',
-    role: 'admin'
-  }
-};
-
-// 인증 미들웨어 (개선된 버전 - user_id 추출)
-const authenticateToken = (req, res, next) => {
+// 인증 미들웨어 (lego_user 테이블 사용)
+const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   
@@ -47,14 +37,29 @@ const authenticateToken = (req, res, next) => {
     const username = tokenParts[1];
     const timestamp = tokenParts[2];
     
-    // 사용자 존재 여부 확인
-    const user = USERS[username];
-    if (!user) {
+    // lego_user 테이블에서 사용자 존재 여부 확인
+    const { data: users, error } = await supabase
+      .from(TABLES.USERS)
+      .select('user_id, user_name, user_role')
+      .eq('user_id', username)
+      .limit(1);
+
+    if (error) {
+      console.error('❌ 사용자 조회 오류:', error);
+      return res.status(500).json({
+        success: false,
+        message: '인증 검증 중 오류가 발생했습니다.'
+      });
+    }
+
+    if (!users || users.length === 0) {
       return res.status(403).json({
         success: false,
         message: '존재하지 않는 사용자입니다.'
       });
     }
+
+    const user = users[0];
     
     // 토큰 만료 검증 (24시간)
     const tokenTime = parseInt(timestamp);
@@ -71,8 +76,11 @@ const authenticateToken = (req, res, next) => {
     
     // 사용자 정보를 request에 추가
     req.user = {
-      ...user,
-      userId: username, // user_id로 사용할 고유 식별자
+      user_id: user.user_id,
+      username: user.user_id, // 호환성을 위해 username으로도 설정
+      name: user.user_name || user.user_id,
+      role: user.user_role || 'user',
+      userId: user.user_id, // user_id로 사용할 고유 식별자
       token: token
     };
     
@@ -90,35 +98,63 @@ const authenticateToken = (req, res, next) => {
 
 // ========== 인증 관련 API ==========
 
-// 로그인 (임시 - Supabase Auth 구현 전)
+// 로그인 (lego_user 테이블 사용)
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
     console.log('🔐 로그인 시도:', username);
     
-    // 임시 하드코딩 인증
-    if (username === 'woogi' && password === 'woogi01!') {
-      const token = `token_${username}_${Date.now()}`;
-      
-      console.log('✅ 로그인 성공:', username);
-      
-      res.json({
-        success: true,
-        token,
-        user: {
-          username: 'woogi',
-          name: '우기',
-          role: 'admin'
-        }
+    // lego_user 테이블에서 사용자 조회
+    const { data: users, error } = await supabase
+      .from(TABLES.USERS)
+      .select('user_id, user_pw, user_name, user_role')
+      .eq('user_id', username)
+      .limit(1);
+
+    if (error) {
+      console.error('❌ 데이터베이스 조회 오류:', error);
+      return res.status(500).json({
+        success: false,
+        message: '서버 오류가 발생했습니다.'
       });
-    } else {
-      console.log('❌ 로그인 실패: 잘못된 인증 정보');
-      res.status(401).json({
+    }
+
+    // 사용자가 존재하지 않는 경우
+    if (!users || users.length === 0) {
+      console.log('❌ 로그인 실패: 존재하지 않는 사용자');
+      return res.status(401).json({
         success: false,
         message: '아이디 또는 비밀번호가 올바르지 않습니다.'
       });
     }
+
+    const user = users[0];
+
+    // 비밀번호 확인
+    if (user.user_pw !== password) {
+      console.log('❌ 로그인 실패: 잘못된 비밀번호');
+      return res.status(401).json({
+        success: false,
+        message: '아이디 또는 비밀번호가 올바르지 않습니다.'
+      });
+    }
+
+    // 로그인 성공
+    const token = `token_${username}_${Date.now()}`;
+    
+    console.log('✅ 로그인 성공:', username);
+    
+    res.json({
+      success: true,
+      token,
+      user: {
+        username: user.user_id,
+        name: user.user_name || user.user_id,
+        role: user.user_role || 'user'
+      }
+    });
+
   } catch (error) {
     console.error('로그인 API 오류:', error);
     res.status(500).json({
