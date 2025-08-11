@@ -27,10 +27,12 @@ const Login = () => {
     try {
       const success = await login(formData.username, formData.password);
       if (!success) {
-        setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+        // 서버 연결 실패일 수 있으므로 더 구체적인 메시지 제공
+        setError('로그인 실패: 서버 연결을 확인하거나 아이디/비밀번호를 다시 확인해주세요.');
       }
     } catch (err) {
-      setError('로그인 중 오류가 발생했습니다.');
+      console.error('Login error:', err);
+      setError('로그인 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요.');
     } finally {
       setLoading(false);
     }
