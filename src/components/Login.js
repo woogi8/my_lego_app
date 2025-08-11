@@ -120,7 +120,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ddd'
             }}>
-              버전 v2.1.1 (API 재배포)
+              버전 v2.1.2 (pages/api 구조)
             </div>
           </div>
         </div>

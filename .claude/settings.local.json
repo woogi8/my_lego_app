@@ -25,7 +25,9 @@
       "Bash(vercel:*)",
       "Bash(cp:*)",
       "Bash(npm run build:*)",
-      "WebFetch(domain:my-lego-app-five.vercel.app)"
+      "WebFetch(domain:my-lego-app-five.vercel.app)",
+      "Bash(mkdir:*)",
+      "Bash(copy:*)"
     ],
     "deny": []
   }
