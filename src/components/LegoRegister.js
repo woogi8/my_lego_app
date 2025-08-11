@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { useAuth } from '../context/AuthContext';
+import legoService from '../services/supabaseService';
 
 const LegoRegister = () => {
   const { token } = useAuth();
@@ -42,16 +43,11 @@ const LegoRegister = () => {
   });
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // API에서 레고 데이터 불러오기
+  // Supabase에서 직접 레고 데이터 불러오기 (서버 없이)
   const loadLegoData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/legos', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      const result = await response.json();
+      console.log('🔍 Supabase에서 레고 데이터 불러오는 중...');
+      const result = await legoService.getAllLegos();
       
       if (result.success) {
         const data = Array.isArray(result.data) ? result.data : [];
@@ -91,18 +87,10 @@ const LegoRegister = () => {
     }
   };
 
-  // 파일 상태 확인 함수
+  // 파일 상태 확인 함수 (더 이상 필요 없음 - Supabase 직접 사용)
   const loadFileStatus = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/status');
-      const result = await response.json();
-      
-      if (result.success) {
-        setFileStatus(result);
-      }
-    } catch (error) {
-      console.error('파일 상태 확인 오류:', error);
-    }
+    // Supabase를 직접 사용하므로 파일 상태 체크 불필요
+    console.log('Supabase 직접 연결 사용 중');
   };
 
   // 이미지 URL 생성 함수
@@ -549,16 +537,8 @@ const LegoRegister = () => {
         '이미지 URL': data.imageUrl
       };
 
-      const response = await fetch('http://localhost:3000/api/legos', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newRecord)
-      });
-
-      const result = await response.json();
+      // Supabase에 직접 저장 (서버 없이)
+      const result = await legoService.addLego(newRecord);
       
       if (result.success) {
         // 등록 후 데이터 다시 불러오기
@@ -702,16 +682,8 @@ const LegoRegister = () => {
         '이미지 URL': data.imageUrl
       }));
 
-      const response = await fetch('http://localhost:3000/api/legos/bulk', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: newRecords })
-      });
-
-      const result = await response.json();
+      // Supabase에 직접 대량 저장 (서버 없이)
+      const result = await legoService.bulkAddLegos(newRecords);
       
       if (result.success) {
         // 일괄 업로드 후 데이터 다시 불러오기
@@ -880,16 +852,8 @@ const LegoRegister = () => {
         '등록 시간': legoList[editingIndex]['등록 시간'] // 기존 등록 시간 유지
       };
 
-      const response = await fetch(`http://localhost:3000/api/legos/${editingLegoId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedRecord)
-      });
-
-      const result = await response.json();
+      // Supabase에서 직접 수정 (서버 없이)
+      const result = await legoService.updateLego(editingLegoId, updatedRecord);
       
       if (result.success) {
         // 수정 후 데이터 다시 불러오기
@@ -918,15 +882,8 @@ const LegoRegister = () => {
   const deleteLego = async (legoId) => {
     if (window.confirm('정말로 이 레고를 삭제하시겠습니까?')) {
       try {
-        const response = await fetch(`http://localhost:3000/api/legos/${legoId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const result = await response.json();
+        // Supabase에서 직접 삭제 (서버 없이)
+        const result = await legoService.deleteLego(legoId);
         
         if (result.success) {
           // 삭제 후 데이터 다시 불러오기
@@ -1084,16 +1041,10 @@ const LegoRegister = () => {
           '이미지 URL': item['이미지 URL']
         };
 
-        const response = await fetch(`http://localhost:3000/api/legos/${item.id}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updateData)
-        });
-
-        if (!response.ok) {
+        // Supabase에서 직접 수정 (서버 없이)
+        const updateResult = await legoService.updateLego(item.id, updateData);
+        
+        if (!updateResult.success) {
           throw new Error(`레고 ${item['레고 번호']} 업데이트 실패`);
         }
       });
