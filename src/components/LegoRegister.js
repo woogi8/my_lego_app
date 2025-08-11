@@ -93,10 +93,61 @@ const LegoRegister = () => {
     }
   };
 
-  // 파일 상태 확인 함수 (더 이상 필요 없음 - Supabase 직접 사용)
+  // 데이터베이스 상태 확인 함수
   const loadFileStatus = async () => {
-    // Supabase를 직접 사용하므로 파일 상태 체크 불필요
-    console.log('Supabase 직접 연결 사용 중');
+    try {
+      console.log('🔍 데이터베이스 상태 확인 중...');
+      
+      // Vercel Functions 시도
+      try {
+        const response = await fetch('/api/legos', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && Array.isArray(result.data)) {
+            const totalItems = result.data.length;
+            console.log('✅ Vercel Functions 상태 확인 성공:', totalItems, '개');
+            setFileStatus({
+              success: true,
+              totalItems,
+              database: 'PostgreSQL (Supabase)',
+              source: 'Vercel Functions',
+              timestamp: new Date().toISOString()
+            });
+            return;
+          }
+        }
+      } catch (fetchError) {
+        console.log('🔄 Vercel Functions 실패, 로컬 데이터 사용:', fetchError.message);
+      }
+      
+      // 로컬 폴백 - legoList에서 개수 계산
+      const totalItems = legoList.length;
+      console.log('✅ 로컬 데이터 상태 확인:', totalItems, '개');
+      setFileStatus({
+        success: true,
+        totalItems,
+        database: 'PostgreSQL (Supabase)',
+        source: 'Local Cache',
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error('상태 확인 오류:', error);
+      setFileStatus({
+        success: false,
+        totalItems: 0,
+        database: 'PostgreSQL (Supabase)',
+        source: 'Error',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      });
+    }
   };
 
   // 이미지 URL 생성 함수
@@ -116,9 +167,19 @@ const LegoRegister = () => {
 
   // 컴포넌트 마운트시 데이터 불러오기
   useEffect(() => {
-    loadLegoData();
-    loadFileStatus();
+    const initializeData = async () => {
+      await loadLegoData();
+      await loadFileStatus();
+    };
+    initializeData();
   }, []);
+
+  // legoList가 변경될 때마다 상태 업데이트
+  useEffect(() => {
+    if (legoList.length > 0) {
+      loadFileStatus();
+    }
+  }, [legoList]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
