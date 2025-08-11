@@ -48,39 +48,46 @@ export const AuthProvider = ({ children }) => {
 
   // 로그인 함수 (하드코딩된 사용자로 서버 없이 작동)
   const login = async (username, password) => {
-    console.log('🔐 로그인 시도:', { username, password: '***' });
-    
-    // 하드코딩된 사용자 정보에서 확인
-    const user = HARDCODED_USERS.find(
-      u => u.username === username && u.password === password
-    );
-    
-    if (user) {
-      console.log('✅ 로그인 성공:', username);
-      
-      // 토큰 생성 (서버 없이 로컬에서 생성)
-      const token = `token_${username}_${Date.now()}`;
-      
-      // 사용자 데이터 준비
-      const userData = {
-        username: user.username,
-        name: user.name,
-        role: user.role
-      };
-      
-      // 로컬스토리지에 저장
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userData', JSON.stringify(userData));
-      
-      // 상태 업데이트
-      setIsAuthenticated(true);
-      setUser(userData);
-      
-      return true;
-    } else {
-      console.log('❌ 로그인 실패: 잘못된 아이디 또는 비밀번호');
-      return false;
-    }
+    // Promise로 감싸서 async 동작 시뮬레이션
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('🔐 로그인 시도:', { username, password: '***' });
+        
+        // 하드코딩된 사용자 정보에서 확인
+        const user = HARDCODED_USERS.find(
+          u => u.username === username && u.password === password
+        );
+        
+        if (user) {
+          console.log('✅ 로그인 성공:', username);
+          
+          // 토큰 생성 (서버 없이 로컬에서 생성)
+          const token = `token_${username}_${Date.now()}`;
+          
+          // 사용자 데이터 준비
+          const userData = {
+            username: user.username,
+            name: user.name,
+            role: user.role
+          };
+          
+          // 로컬스토리지에 저장
+          localStorage.setItem('authToken', token);
+          localStorage.setItem('userData', JSON.stringify(userData));
+          
+          // 상태 업데이트
+          setIsAuthenticated(true);
+          setUser(userData);
+          
+          resolve(true);
+        } else {
+          console.log('❌ 로그인 실패: 잘못된 아이디 또는 비밀번호');
+          console.log('입력된 정보:', { username, password });
+          console.log('사용 가능한 계정:', HARDCODED_USERS.map(u => u.username));
+          resolve(false);
+        }
+      }, 100); // 약간의 딜레이 추가
+    });
   };
 
   // 로그아웃 함수

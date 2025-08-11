@@ -27,7 +27,7 @@ const Login = () => {
     try {
       const success = await login(formData.username, formData.password);
       if (!success) {
-        setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+        setError('아이디 또는 비밀번호가 올바르지 않습니다. (woogi/woogi01! 또는 lei/lei01!)');
       }
     } catch (err) {
       console.error('Login error:', err);
