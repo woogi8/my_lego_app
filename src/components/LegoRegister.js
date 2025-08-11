@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { useAuth } from '../context/AuthContext';
-import legoService from '../services/supabaseService';
+// import legoService from '../services/supabaseService'; // Vercel Functions 사용으로 대체
 
 const LegoRegister = () => {
   const { token } = useAuth();
@@ -43,11 +43,17 @@ const LegoRegister = () => {
   });
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Supabase에서 직접 레고 데이터 불러오기 (서버 없이)
+  // Vercel Functions에서 레고 데이터 불러오기
   const loadLegoData = async () => {
     try {
-      console.log('🔍 Supabase에서 레고 데이터 불러오는 중...');
-      const result = await legoService.getAllLegos();
+      console.log('🔍 Vercel Functions에서 레고 데이터 불러오는 중...');
+      const response = await fetch('/api/legos', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      const result = await response.json();
       
       if (result.success) {
         const data = Array.isArray(result.data) ? result.data : [];
@@ -537,8 +543,16 @@ const LegoRegister = () => {
         '이미지 URL': data.imageUrl
       };
 
-      // Supabase에 직접 저장 (서버 없이)
-      const result = await legoService.addLego(newRecord);
+      // Vercel Functions로 저장
+      const response = await fetch('/api/legos', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newRecord)
+      });
+      const result = await response.json();
       
       if (result.success) {
         // 등록 후 데이터 다시 불러오기
@@ -682,8 +696,16 @@ const LegoRegister = () => {
         '이미지 URL': data.imageUrl
       }));
 
-      // Supabase에 직접 대량 저장 (서버 없이)
-      const result = await legoService.bulkAddLegos(newRecords);
+      // Vercel Functions로 대량 저장
+      const response = await fetch('/api/legos/bulk', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: newRecords })
+      });
+      const result = await response.json();
       
       if (result.success) {
         // 일괄 업로드 후 데이터 다시 불러오기
@@ -852,8 +874,16 @@ const LegoRegister = () => {
         '등록 시간': legoList[editingIndex]['등록 시간'] // 기존 등록 시간 유지
       };
 
-      // Supabase에서 직접 수정 (서버 없이)
-      const result = await legoService.updateLego(editingLegoId, updatedRecord);
+      // Vercel Functions로 수정
+      const response = await fetch(`/api/legos/${editingLegoId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedRecord)
+      });
+      const result = await response.json();
       
       if (result.success) {
         // 수정 후 데이터 다시 불러오기
@@ -882,8 +912,15 @@ const LegoRegister = () => {
   const deleteLego = async (legoId) => {
     if (window.confirm('정말로 이 레고를 삭제하시겠습니까?')) {
       try {
-        // Supabase에서 직접 삭제 (서버 없이)
-        const result = await legoService.deleteLego(legoId);
+        // Vercel Functions로 삭제
+        const response = await fetch(`/api/legos/${legoId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        const result = await response.json();
         
         if (result.success) {
           // 삭제 후 데이터 다시 불러오기
@@ -1041,9 +1078,21 @@ const LegoRegister = () => {
           '이미지 URL': item['이미지 URL']
         };
 
-        // Supabase에서 직접 수정 (서버 없이)
-        const updateResult = await legoService.updateLego(item.id, updateData);
+        // Vercel Functions로 수정
+        const response = await fetch(`/api/legos/${item.id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData)
+        });
         
+        if (!response.ok) {
+          throw new Error(`레고 ${item['레고 번호']} 업데이트 실패`);
+        }
+        
+        const updateResult = await response.json();
         if (!updateResult.success) {
           throw new Error(`레고 ${item['레고 번호']} 업데이트 실패`);
         }

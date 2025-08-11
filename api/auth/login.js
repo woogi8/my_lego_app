@@ -1,17 +1,10 @@
-// Vercel Serverless Function for login
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-export default async function handler(req, res) {
+// Vercel Function: /api/auth/login
+export default function handler(req, res) {
   // CORS 설정
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -19,60 +12,59 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Method not allowed' 
+    });
   }
 
-  const { username, password } = req.body;
-
   try {
-    // Supabase에서 사용자 조회
-    const { data: users, error } = await supabase
-      .from('lego_user')
-      .select('user_id, user_pw, user_name, user_role')
-      .eq('user_id', username)
-      .limit(1);
-
-    if (error) {
-      console.error('Database error:', error);
-      return res.status(500).json({
-        success: false,
-        message: '서버 오류가 발생했습니다.'
-      });
-    }
-
-    if (!users || users.length === 0) {
-      return res.status(401).json({
-        success: false,
-        message: '아이디 또는 비밀번호가 올바르지 않습니다.'
-      });
-    }
-
-    const user = users[0];
-
-    // 비밀번호 확인
-    if (user.user_pw !== password) {
-      return res.status(401).json({
-        success: false,
-        message: '아이디 또는 비밀번호가 올바르지 않습니다.'
-      });
-    }
-
-    // 로그인 성공
-    const token = `token_${username}_${Date.now()}`;
+    const { username, password } = req.body;
     
-    res.status(200).json({
-      success: true,
-      token,
-      user: {
-        username: user.user_id,
-        name: user.user_name || user.user_id,
-        role: user.user_role || 'user'
-      }
-    });
+    console.log('🔐 Vercel Function 로그인 시도:', username);
 
+    // 하드코딩된 사용자 정보
+    const USERS = {
+      'woogi': {
+        password: 'woogi01!',
+        name: '우기',
+        role: 'admin'
+      },
+      'lei': {
+        password: 'lei01!',
+        name: '레이',
+        role: 'admin'
+      }
+    };
+
+    // 사용자 인증
+    if (USERS[username] && USERS[username].password === password) {
+      console.log('✅ 로그인 성공:', username);
+      
+      const userData = {
+        username: username,
+        name: USERS[username].name,
+        role: USERS[username].role
+      };
+      
+      const token = `token_${username}_${Date.now()}`;
+      
+      return res.status(200).json({
+        success: true,
+        token: token,
+        user: userData,
+        message: '로그인 성공'
+      });
+    } else {
+      console.log('❌ 로그인 실패:', username);
+      return res.status(401).json({
+        success: false,
+        message: '아이디 또는 비밀번호가 올바르지 않습니다.'
+      });
+    }
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({
+    console.error('로그인 오류:', error);
+    return res.status(500).json({
       success: false,
       message: '서버 오류가 발생했습니다.'
     });

@@ -45,34 +45,41 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  // 완전히 클라이언트 사이드 로그인 (서버 불필요)
-  const login = (username, password) => {
-    console.log('로그인 시도:', username);
-    
-    // 사용자 확인
-    if (USERS[username] && USERS[username].password === password) {
-      console.log('로그인 성공:', username);
+  // Vercel Functions를 사용한 로그인
+  const login = async (username, password) => {
+    try {
+      console.log('🔐 Vercel Function 로그인 시도:', username);
       
-      const userData = {
-        username: username,
-        name: USERS[username].name,
-        role: USERS[username].role
-      };
-      
-      const token = `token_${username}_${Date.now()}`;
-      
-      // 로컬스토리지에 저장
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userData', JSON.stringify(userData));
-      
-      // 상태 업데이트
-      setIsAuthenticated(true);
-      setUser(userData);
-      
-      return Promise.resolve(true);
-    } else {
-      console.log('로그인 실패:', username, '사용 가능한 계정:', Object.keys(USERS));
-      return Promise.resolve(false);
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+      console.log('📋 로그인 응답:', data);
+
+      if (response.ok && data.success) {
+        console.log('✅ 로그인 성공:', data.user);
+        
+        // 로컬스토리지에 저장
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('userData', JSON.stringify(data.user));
+        
+        // 상태 업데이트
+        setIsAuthenticated(true);
+        setUser(data.user);
+        
+        return true;
+      } else {
+        console.log('❌ 로그인 실패:', data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      return false;
     }
   };
 
